@@ -1,0 +1,771 @@
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet"><style>#zk-app{background:var(--bg);background-image:radial-gradient(var(--grid) 1px,transparent 1px);background-size:22px 22px;color:var(--ink);font-family:var(--fb);line-height:1.7;border-radius:10px;overflow:hidden;border:1.5px solid var(--frame)}#zk-app *{box-sizing:border-box}:root{
+  --bg:#f5f6f8;
+  --panel:#ffffff;
+  --ink:#0f1620;
+  --ink-2:#27313f;
+  --mute:#5d6776;
+  --rule:#dde1e8;
+  --rule-2:#c7ccd6;
+  --frame:#0f1620;
+  --acc:#1f4cff;          /* 電光ブルー（唯一の差し色） */
+  --acc-2:#163bd6;
+  --acc-soft:#e9edff;
+  --live:#0b9d6f;         /* 稼働・適用 */
+  --warn:#b4791b;
+  --grid:rgba(15,22,32,.05);
+  --radius:6px;
+  --max:1200px;
+  --fs:"Space Grotesk","Noto Sans JP",-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN",Meiryo,sans-serif;
+  --fb:"Noto Sans JP",-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
+  --fm:"Space Mono","Roboto Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  /* 旧クラス互換 */
+  --red:var(--acc);--red-dark:var(--acc-2);--red-soft:var(--acc-soft);
+  --line:var(--rule);--line-strong:var(--rule-2);--navy:var(--ink);--muted:var(--mute);
+  --green:var(--live);--gold:var(--warn);--blue:var(--acc);--blue-dark:var(--acc-2);--blue-soft:var(--acc-soft);
+  --paper:var(--bg);--paper-2:#eceef2;--seal:var(--acc);--ok:var(--live);
+  --shadow:0 18px 50px rgba(15,22,32,.12);--shadow-sm:0 2px 0 rgba(15,22,32,.04);
+  --font-serif:var(--fb);--font-display:var(--fm);--font-sans:var(--fb);
+  --radius-sm:4px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:var(--fb);color:var(--ink);line-height:1.7;-webkit-font-smoothing:antialiased;
+  background:var(--bg);
+  background-image:radial-gradient(var(--grid) 1px,transparent 1px);
+  background-size:22px 22px}
+a{color:inherit;text-decoration:none}
+button,input,select,textarea{font:inherit}
+img{max-width:100%}
+h1,h2,h3{font-family:var(--fs);font-weight:600;letter-spacing:-.01em}
+.container{max-width:var(--max);margin:0 auto;padding:0 24px}
+.skip{position:absolute;left:-999px}
+.skip:focus{left:16px;top:16px;z-index:99;background:#fff;padding:10px 14px;border:2px solid var(--acc)}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+
+/* 等幅ラベル＆注釈（ブループリント言語） */
+.mono,.eyebrow,.annot,.module-label,.kicker{font-family:var(--fm);text-transform:uppercase;letter-spacing:.1em}
+.eyebrow{font-size:11px;color:var(--acc);font-weight:400}
+.kicker{display:inline-flex;align-items:center;gap:10px;font-size:11px;color:var(--mute);margin:0 0 14px}
+.kicker:before{content:"";width:24px;height:1px;background:var(--rule-2)}
+.annot{display:inline-block;font-size:10px;color:var(--mute);border:1px solid var(--rule-2);border-radius:3px;padding:2px 7px}
+.annot.live{color:var(--live);border-color:#b7e3d2;background:#eafaf3}
+.annot.acc{color:var(--acc);border-color:#c5d0ff;background:var(--acc-soft)}
+
+/* トップバー（システム情報行） */
+.dateline{background:var(--ink);color:#cfd6e0}
+.dateline-inner{max-width:var(--max);margin:0 auto;padding:7px 24px;display:flex;justify-content:space-between;align-items:center;font-family:var(--fm);font-size:11px;letter-spacing:.06em}
+.dateline a{margin-left:18px;color:#cfd6e0}
+.dateline a:hover{color:#fff}
+
+.site-header{background:rgba(245,246,248,.92);backdrop-filter:blur(6px);position:relative;z-index:5;border-bottom:1.5px solid var(--frame)}
+.header-main{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:auto 1fr auto;gap:24px;align-items:center;padding:14px 24px}
+.logo{display:flex;align-items:center;gap:12px}
+.logo-mark{width:42px;height:42px;border-radius:5px;background:var(--ink);color:#fff;display:grid;place-items:center;font-family:var(--fs);font-weight:700;font-size:16px}
+.logo-text strong{display:block;font-family:var(--fs);font-size:20px;letter-spacing:-.01em;line-height:1.1;font-weight:700}
+.logo-text span{display:block;color:var(--mute);font-size:10px;letter-spacing:.18em;margin-top:2px;font-family:var(--fm)}
+.header-search{position:relative}
+.header-search input{width:100%;height:42px;border:1.5px solid var(--rule-2);border-radius:var(--radius-sm);padding:0 92px 0 40px;background:#fff;font-family:var(--fb)}
+.header-search input:hover,.header-search input:focus{border-color:var(--acc)}
+.header-search:before{content:"";position:absolute;left:15px;top:50%;width:13px;height:13px;border:1.5px solid #98a1af;border-radius:50%;transform:translateY(-60%)}
+.header-search:after{content:"";position:absolute;left:25px;top:25px;width:8px;height:1.5px;background:#98a1af;transform:rotate(45deg)}
+.search-submit{position:absolute;right:4px;top:4px;border:0;background:var(--ink);color:#fff;border-radius:var(--radius-sm);height:34px;padding:0 14px;cursor:pointer;font-family:var(--fm);font-size:12px;text-transform:uppercase;letter-spacing:.06em}
+.search-submit:hover{background:var(--acc)}
+.header-actions{display:flex;gap:8px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;border-radius:var(--radius-sm);padding:10px 16px;border:1.5px solid transparent;font-weight:600;line-height:1.2;cursor:pointer;white-space:nowrap;transition:.13s;font-size:14px}
+.btn-primary{background:var(--acc);color:#fff;border-color:var(--acc)}
+.btn-primary:hover{background:var(--acc-2);border-color:var(--acc-2)}
+.btn-secondary{background:transparent;border-color:var(--frame);color:var(--ink)}
+.btn-secondary:hover{background:var(--ink);color:#fff}
+.btn-ghost{background:transparent;border-color:rgba(255,255,255,.4);color:#fff}
+.btn-ghost:hover{background:rgba(255,255,255,.12)}
+.btn-text{display:inline-flex;align-items:center;gap:6px;color:var(--acc);font-weight:600}
+.btn-text:after{content:"→"}
+.navbar{border-top:1px solid var(--rule);background:transparent}
+.nav-inner{max-width:var(--max);margin:0 auto;display:flex;justify-content:space-between;align-items:center;padding:0 24px}
+.nav-links{display:flex;gap:2px}
+.nav-link{padding:12px 16px;font-weight:500;color:var(--ink-2);border-bottom:2px solid transparent;font-size:14px}
+.nav-link:hover,.nav-link.active{color:var(--acc);border-color:var(--acc)}
+.mobile-menu{display:none;border:1.5px solid var(--frame);background:#fff;border-radius:var(--radius-sm);padding:9px 12px}
+
+main{min-height:70vh}
+.section{padding:56px 0}
+.section-tight{padding:32px 0}
+.section-title{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:24px}
+.section-title h2{font-size:26px;line-height:1.3;margin:8px 0 0}
+.section-title p{margin:8px 0 0;color:var(--mute)}
+
+/* ===== モジュール枠（ワイヤーフレーム言語） ===== */
+.module{border:1.5px solid var(--frame);border-radius:var(--radius);background:var(--panel);position:relative}
+.module-tab{position:absolute;top:-1px;left:-1px;background:var(--ink);color:#fff;font-family:var(--fm);font-size:10px;letter-spacing:.12em;padding:4px 10px;border-radius:var(--radius) 0 var(--radius) 0}
+
+/* ===== 用件コンソール（ヒーロー＝AIネイティブ・ルーター） ===== */
+.console-wrap{padding:48px 0 30px}
+.console-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.console-head h1{font-size:40px;line-height:1.25;margin:0}
+.console{padding:26px}
+.console .module-tab{} 
+.console-bar{display:flex;gap:10px;align-items:stretch;margin-top:6px}
+.console-bar .pre{display:flex;align-items:center;font-family:var(--fm);color:var(--acc);font-size:18px}
+.console-bar input{flex:1;border:1.5px solid var(--frame);border-radius:var(--radius-sm);padding:0 16px;height:54px;font-size:16px;background:#fff;font-family:var(--fb)}
+.console-bar input:focus{border-color:var(--acc)}
+.console-bar button{border:0;background:var(--acc);color:#fff;border-radius:var(--radius-sm);padding:0 24px;font-weight:700;cursor:pointer;font-size:15px}
+.console-bar button:hover{background:var(--acc-2)}
+.console-hint{margin:14px 0 0;font-family:var(--fm);font-size:11px;color:var(--mute);letter-spacing:.04em}
+.console-resp{margin-top:18px;border-top:1px dashed var(--rule-2);padding-top:18px;display:none}
+.console-resp.show{display:block;animation:fade .25s ease}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1}}
+.resp-line{display:flex;gap:10px;align-items:flex-start}
+.resp-badge{flex:0 0 auto;font-family:var(--fm);font-size:10px;letter-spacing:.1em;color:#fff;background:var(--ink);padding:3px 8px;border-radius:3px;margin-top:2px}
+.resp-body{flex:1}
+.resp-body h4{margin:0 0 4px;font-family:var(--fs);font-size:17px}
+.resp-body p{margin:0 0 12px;color:var(--mute);font-size:14px}
+.resp-cta{display:flex;gap:10px;flex-wrap:wrap}
+
+/* インテント・チップ（全用件を等価に） */
+.intent-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.chip{font-family:var(--fm);font-size:12px;letter-spacing:.02em;border:1.5px solid var(--rule-2);background:#fff;border-radius:999px;padding:7px 13px;cursor:pointer;color:var(--ink-2);transition:.12s}
+.chip:hover,.chip.active{border-color:var(--acc);color:var(--acc);background:var(--acc-soft)}
+.chip b{font-weight:400;color:var(--acc);margin-right:6px}
+
+/* ===== インテント・マップ（全インテントの俯瞰） ===== */
+.intent-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border:1.5px solid var(--frame);border-radius:var(--radius);overflow:hidden;background:var(--panel)}
+.intent-node{padding:20px 18px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);cursor:pointer;transition:.13s;display:flex;flex-direction:column;min-height:128px}
+.intent-node:hover{background:var(--acc-soft)}
+.intent-node .ix{font-family:var(--fm);font-size:11px;color:var(--mute);letter-spacing:.08em}
+.intent-node h3{font-size:16px;margin:10px 0 4px;line-height:1.4}
+.intent-node p{margin:0;color:var(--mute);font-size:12px;flex:1}
+.intent-node .go{font-family:var(--fm);font-size:11px;color:var(--acc);margin-top:8px;letter-spacing:.06em}
+.intent-node .go:after{content:" →"}
+
+/* ===== 2035 アーキテクチャ図 ===== */
+.arch{border:1.5px solid var(--frame);border-radius:var(--radius);background:var(--panel);padding:30px}
+.arch-core{border:1.5px dashed var(--acc);border-radius:var(--radius);background:var(--acc-soft);padding:18px 20px;text-align:center;max-width:520px;margin:0 auto 4px}
+.arch-core .t{font-family:var(--fs);font-weight:700;font-size:18px}
+.arch-core .s{font-family:var(--fm);font-size:11px;color:var(--acc-2);letter-spacing:.06em;margin-top:4px}
+.arch-pipe{width:1.5px;height:26px;background:var(--rule-2);margin:0 auto}
+.arch-out{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.arch-card{border:1.5px solid var(--frame);border-radius:var(--radius-sm);padding:14px;text-align:center;background:#fff}
+.arch-card .ic{font-family:var(--fm);font-size:10px;color:var(--mute);letter-spacing:.08em}
+.arch-card h4{font-family:var(--fs);font-size:14px;margin:8px 0 4px}
+.arch-card p{margin:0;font-size:11px;color:var(--mute)}
+.arch-feed{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:8px}
+.arch-feed div{font-family:var(--fm);font-size:11px;color:var(--ink-2);border:1px solid var(--rule);border-radius:3px;padding:8px;text-align:center;background:#fbfcfe}
+
+/* ===== AIアシスタント・ドック（チャットボット常設） ===== */
+.assistant-dock{position:fixed;right:22px;bottom:22px;z-index:80}
+.assistant-launch{display:flex;align-items:center;gap:10px;background:var(--ink);color:#fff;border:0;border-radius:999px;padding:13px 20px 13px 16px;cursor:pointer;box-shadow:var(--shadow);font-weight:600}
+.assistant-launch .dot{width:9px;height:9px;border-radius:50%;background:var(--live);box-shadow:0 0 0 3px rgba(11,157,111,.25)}
+.assistant-launch:hover{background:var(--acc)}
+.assistant-panel{position:absolute;right:0;bottom:62px;width:340px;max-width:86vw;border:1.5px solid var(--frame);border-radius:var(--radius);background:#fff;box-shadow:var(--shadow);display:none;overflow:hidden}
+.assistant-panel.open{display:block}
+.ap-head{background:var(--ink);color:#fff;padding:13px 16px;display:flex;align-items:center;gap:8px}
+.ap-head .dot{width:8px;height:8px;border-radius:50%;background:var(--live)}
+.ap-head strong{font-family:var(--fs);font-size:14px;flex:1}
+.ap-head .annot{color:#cfd6e0;border-color:rgba(255,255,255,.3)}
+.ap-body{padding:14px;max-height:300px;overflow:auto;background:var(--bg)}
+.ap-msg{background:#fff;border:1px solid var(--rule);border-radius:8px;padding:10px 12px;font-size:13px;margin-bottom:10px}
+.ap-msg.me{background:var(--acc-soft);border-color:#c5d0ff;margin-left:28px}
+.ap-quick{display:flex;flex-wrap:wrap;gap:6px}
+.ap-quick button{font-family:var(--fm);font-size:11px;border:1px solid var(--rule-2);background:#fff;border-radius:999px;padding:6px 10px;cursor:pointer}
+.ap-quick button:hover{border-color:var(--acc);color:var(--acc)}
+.ap-foot{display:flex;border-top:1px solid var(--rule)}
+.ap-foot input{flex:1;border:0;padding:12px 14px;font-size:13px}
+.ap-foot input:focus{outline:none}
+.ap-foot button{border:0;background:var(--acc);color:#fff;padding:0 16px;cursor:pointer;font-family:var(--fm);font-size:12px}
+
+/* ===== 既存コンポーネント（ブループリント調にリスキン） ===== */
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.cards-4{grid-template-columns:repeat(4,1fr)}
+.card{background:#fff;border:1.5px solid var(--frame);border-radius:var(--radius);padding:22px;transition:.13s}
+.card:hover{box-shadow:var(--shadow-sm);transform:translateY(-2px)}
+.card h3{margin:0 0 8px;font-size:18px;line-height:1.4}
+.card p{margin:0;color:var(--mute);font-size:14px}
+.card .meta{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap}
+.tag{display:inline-flex;align-items:center;border-radius:3px;background:var(--paper-2);color:#46505f;padding:3px 8px;font-size:11px;font-weight:500;font-family:var(--fm);letter-spacing:.04em;text-transform:uppercase}
+.tag-red,.tag-blue{background:var(--acc-soft);color:var(--acc-2)}
+.tag-green{background:#e6f6ee;color:var(--live)}
+.feature-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:20px}
+.panel{background:#fff;border:1.5px solid var(--frame);border-radius:var(--radius);padding:24px}
+.tabs{display:flex;gap:0;border-bottom:1.5px solid var(--frame);margin-bottom:18px}
+.tab{border:0;border-bottom:2px solid transparent;background:none;padding:9px 4px;margin-right:18px;font-weight:600;color:var(--mute);cursor:pointer;font-family:var(--fm);font-size:13px;text-transform:uppercase;letter-spacing:.04em}
+.tab.active{color:var(--acc);border-color:var(--acc)}
+.tab-content{display:none}.tab-content.active{display:block}
+.news-list{display:grid;gap:0}
+.news-item{display:grid;grid-template-columns:108px 1fr auto;gap:16px;align-items:center;padding:14px 0;border-bottom:1px solid var(--rule)}
+.news-item:last-child{border-bottom:0}
+.news-item:hover .news-title{color:var(--acc)}
+.date{color:var(--mute);font-size:11px;font-family:var(--fm);letter-spacing:.04em}
+.news-title{font-weight:500}
+.pill-link{font-size:11px;color:var(--acc);font-weight:600;font-family:var(--fm);text-transform:uppercase}
+.pill-link:after{content:" →"}
+.product-strip{background:#fff;border-top:1.5px solid var(--frame);border-bottom:1.5px solid var(--frame)}
+.product-row{display:grid;grid-template-columns:repeat(4,1fr)}
+.product-cell{padding:22px;border-right:1px solid var(--rule)}
+.product-cell:last-child{border-right:0}
+.product-cell small{display:block;color:var(--acc);margin-bottom:6px;font-family:var(--fm);letter-spacing:.08em;text-transform:uppercase;font-size:10px}
+.product-cell h3{margin:0 0 6px;font-size:17px}
+.product-cell p{margin:0;color:var(--mute);font-size:14px}
+.compare-card{background:var(--ink);color:#fff;border-radius:var(--radius);padding:30px}
+.compare-card h2{font-size:23px;margin:0 0 10px;color:#fff}
+.compare-card p{color:rgba(255,255,255,.78)}
+.compare-card .mini-table{background:#fff;color:var(--ink);border-radius:var(--radius-sm);overflow:hidden;margin-top:18px}
+.mini-row{display:grid;grid-template-columns:1fr 1fr auto;border-bottom:1px solid var(--rule)}
+.mini-row:last-child{border-bottom:0}
+.mini-row span{padding:11px 14px;font-size:13px}
+.mini-row span:first-child{font-weight:600;background:var(--bg)}
+.mini-row span:last-child{font-family:var(--fm);text-align:right}
+.page-hero{background:#fff;border-bottom:1.5px solid var(--frame)}
+.page-hero-inner{max-width:var(--max);margin:0 auto;padding:42px 24px}
+.breadcrumb{font-size:11px;color:var(--mute);margin-bottom:14px;font-family:var(--fm);letter-spacing:.04em;text-transform:uppercase}
+.page-hero h1{font-size:32px;line-height:1.25;margin:0 0 14px}
+.page-hero p{font-size:16px;color:var(--ink-2);margin:0;max-width:760px}
+.toolbar{background:#fff;border:1.5px solid var(--frame);border-radius:var(--radius);padding:14px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:24px}
+.toolbar input,.toolbar select{border:1.5px solid var(--rule-2);border-radius:var(--radius-sm);padding:10px 12px;background:#fff;min-width:180px}
+.filter-chips{display:flex;gap:8px;flex-wrap:wrap}
+.filter-chip{border:1.5px solid var(--rule-2);background:#fff;border-radius:999px;padding:7px 14px;font-weight:500;cursor:pointer;font-size:12px;font-family:var(--fm)}
+.filter-chip.active{background:var(--ink);border-color:var(--ink);color:#fff}
+.table-wrap{overflow-x:auto;border:1.5px solid var(--frame);border-radius:var(--radius);background:#fff}
+.compare-table{width:100%;border-collapse:collapse;min-width:940px}
+.compare-table th,.compare-table td{border-bottom:1px solid var(--rule);border-right:1px solid var(--rule);padding:14px 16px;vertical-align:top}
+.compare-table th:last-child,.compare-table td:last-child{border-right:0}
+.compare-table thead th{background:var(--bg);font-size:12px;text-align:left;font-family:var(--fm);text-transform:uppercase;letter-spacing:.04em}
+.compare-table tbody th{background:#fafbfc;width:166px;color:var(--ink);text-align:left;font-weight:600}
+.check{color:var(--live);font-weight:700}
+.dash{color:#aeb4c0}
+.price{font-size:20px;font-weight:600;color:var(--ink);font-family:var(--fm)}
+.price small{font-size:13px;color:var(--mute);font-weight:500}
+.recommend{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.recommend .card{border-top:3px solid var(--acc)}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;counter-reset:step}
+.step{background:#fff;border:1.5px solid var(--frame);border-radius:var(--radius);padding:18px;position:relative}
+.step:before{counter-increment:step;content:"0" counter(step);display:block;font-family:var(--fm);font-size:13px;color:var(--acc);margin-bottom:10px;letter-spacing:.06em}
+.step strong{display:block;margin-bottom:4px}
+.step p{margin:0;color:var(--mute);font-size:13px}
+.seminar-layout{display:grid;grid-template-columns:266px 1fr;gap:24px}
+.side-filter{background:#fff;border:1.5px solid var(--frame);border-radius:var(--radius);padding:20px;align-self:start}
+.side-filter h3{margin:0 0 16px;font-size:16px}
+.filter-group{margin-bottom:16px}
+.filter-group label{display:block;font-weight:600;font-size:12px;margin-bottom:7px;font-family:var(--fm);text-transform:uppercase;letter-spacing:.04em}
+.filter-group select,.filter-group input{width:100%;border:1.5px solid var(--rule-2);border-radius:var(--radius-sm);padding:10px;background:#fff}
+.seminar-card{display:grid;grid-template-columns:1fr 206px;gap:20px;background:#fff;border:1.5px solid var(--frame);border-radius:var(--radius);padding:22px;margin-bottom:14px}
+.seminar-card h3{font-size:19px;margin:6px 0 8px}
+.seminar-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.seminar-price{background:var(--bg);border:1px solid var(--rule);border-radius:var(--radius-sm);padding:16px;text-align:center}
+.seminar-price .regular{color:var(--mute);font-size:13px;font-family:var(--fm)}
+.seminar-price .member{color:var(--acc);font-weight:700;font-size:17px;margin:4px 0 12px}
+.login-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.login-card{background:#fff;border:1.5px solid var(--frame);border-radius:var(--radius);padding:22px;display:grid;grid-template-columns:46px 1fr;gap:16px}
+.login-card:hover{box-shadow:var(--shadow-sm)}
+.login-badge{width:46px;height:46px;border-radius:5px;background:var(--ink);color:#fff;display:grid;place-items:center;font-weight:700;font-family:var(--fm);font-size:13px}
+.login-card h3{margin:0 0 4px}
+.login-card ul{margin:10px 0 0;padding-left:1.1em;color:var(--mute);font-size:14px}
+.route-finder{background:#fff;border:1.5px solid var(--frame);border-radius:var(--radius);padding:26px}
+.route-options{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.route-option{border:1.5px solid var(--rule-2);border-radius:var(--radius-sm);padding:16px;background:#fff;text-align:left;cursor:pointer}
+.route-option.active{border-color:var(--acc);background:var(--acc-soft)}
+.route-result{margin-top:18px;border-radius:var(--radius-sm);background:var(--bg);border:1.5px solid var(--frame);border-left:3px solid var(--acc);padding:20px}
+.form-shell{display:grid;grid-template-columns:286px 1fr;gap:24px}
+.purpose-list{background:#fff;border:1.5px solid var(--frame);border-radius:var(--radius);padding:10px}
+.purpose-btn{display:block;width:100%;border:0;background:#fff;text-align:left;padding:13px 14px;border-radius:var(--radius-sm);font-weight:600;color:var(--ink);cursor:pointer}
+.purpose-btn span{display:block;color:var(--mute);font-weight:400;font-size:12px;margin-top:2px}
+.purpose-btn.active,.purpose-btn:hover{background:var(--acc-soft);color:var(--acc)}
+.form-card{background:#fff;border:1.5px solid var(--frame);border-radius:var(--radius);padding:24px}
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.field{display:grid;gap:7px}
+.field label{font-weight:600;font-size:12px;font-family:var(--fm);text-transform:uppercase;letter-spacing:.04em}
+.field input,.field select,.field textarea{border:1.5px solid var(--rule-2);border-radius:var(--radius-sm);padding:11px;background:#fff}
+.field textarea{min-height:108px;resize:vertical}
+.full{grid-column:1/-1}
+.faq-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
+.faq-link{background:var(--bg);border:1.5px solid var(--frame);border-radius:var(--radius-sm);padding:13px;font-weight:600;font-size:14px}
+.faq-link:hover{background:var(--acc-soft);color:var(--acc)}
+.site-footer{background:var(--ink);color:#fff;margin-top:60px}
+.footer-inner{max-width:var(--max);margin:0 auto;padding:46px 24px;display:grid;grid-template-columns:1.3fr repeat(4,1fr);gap:30px}
+.footer-title{font-family:var(--fs);font-size:19px;font-weight:700;margin-bottom:10px}
+.footer-col h3{font-size:11px;margin:0 0 12px;color:#8c97a8;font-family:var(--fm);letter-spacing:.1em;text-transform:uppercase}
+.footer-col a{display:block;color:#d2d9e4;font-size:13px;margin:8px 0}
+.footer-col a:hover{color:#fff}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.13);padding:16px 24px;max-width:var(--max);margin:0 auto;color:#8c97a8;font-size:11px;font-family:var(--fm);letter-spacing:.04em}
+.notice{border-left:3px solid var(--acc);background:var(--acc-soft);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:15px 18px;color:#1c3aa6}
+.inline-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.empty-state{border:1.5px dashed var(--rule-2);background:#fff;border-radius:var(--radius);padding:24px;text-align:center;color:var(--mute)}
+.state-cta{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.state-card{border:1.5px solid var(--frame);border-radius:var(--radius);padding:18px;background:#fff;display:flex;flex-direction:column}
+.state-card .state-label{font-family:var(--fm);font-size:11px;font-weight:500;color:var(--mute);letter-spacing:.08em;text-transform:uppercase}
+.state-card h3{font-size:16px;margin:7px 0 6px}
+.state-card p{margin:0 0 14px;color:var(--mute);font-size:13px;flex:1}
+.state-card.is-primary{border-color:var(--acc);background:var(--acc-soft)}
+.state-card .btn{width:100%}
+.cart-mock{background:#fff;border:1.5px solid var(--frame);border-radius:var(--radius);padding:22px}
+.cart-mock h3{margin:0 0 14px;font-size:18px}
+.cart-line{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--rule)}
+.cart-line:last-of-type{border-bottom:0}
+.cart-line .ttl{font-weight:500}
+.cart-line .amt{font-weight:600;white-space:nowrap;font-family:var(--fm)}
+.cart-line .amt.was{color:var(--mute);text-decoration:line-through;font-weight:400;margin-right:8px}
+.member-alert{display:flex;gap:12px;align-items:flex-start;background:var(--acc-soft);border:1.5px solid #c5d0ff;border-left:3px solid var(--acc);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:14px 16px;margin:14px 0}
+.member-alert .mark{flex:0 0 22px;width:22px;height:22px;border-radius:50%;background:var(--acc);color:#fff;display:grid;place-items:center;font-weight:700;font-size:13px}
+.member-alert strong{display:block;color:var(--acc-2)}
+.member-alert p{margin:2px 0 0;color:#3550a8;font-size:13px}
+.member-applied{display:none;gap:12px;align-items:flex-start;background:#e6f6ee;border:1.5px solid #b7e3d2;border-left:3px solid var(--live);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:14px 16px;margin:14px 0}
+.member-applied.show{display:flex}
+.member-alert.hide{display:none}
+.member-applied .mark{flex:0 0 22px;width:22px;height:22px;border-radius:50%;background:var(--live);color:#fff;display:grid;place-items:center;font-weight:700;font-size:13px}
+.member-applied strong{display:block;color:#0a6b4c}
+.member-applied p{margin:2px 0 0;color:#0c7a57;font-size:13px}
+.cart-total{display:flex;justify-content:space-between;align-items:center;margin-top:8px;padding-top:14px;border-top:2px solid var(--ink)}
+.cart-total .num{font-size:22px;font-weight:700;color:var(--acc);font-family:var(--fm)}
+.freshness{display:flex;flex-wrap:wrap;gap:8px 22px;align-items:center;color:var(--mute);font-size:13px;margin-top:16px;font-family:var(--fm)}
+.freshness .fr{display:flex;gap:7px;align-items:center}
+.freshness .fr b{color:var(--ink);font-weight:600}
+.req-table{width:100%;border-collapse:collapse;background:#fff;min-width:880px}
+.req-table th,.req-table td{border-bottom:1px solid var(--rule);border-right:1px solid var(--rule);padding:14px 16px;vertical-align:top;text-align:left;font-size:14px}
+.req-table th:last-child,.req-table td:last-child{border-right:0}
+.req-table thead th{background:var(--bg);font-size:12px;font-family:var(--fm);text-transform:uppercase;letter-spacing:.04em}
+.req-table td .no{font-weight:700;color:var(--acc);font-family:var(--fm)}
+.status{display:inline-block;border-radius:3px;padding:3px 9px;font-size:11px;font-weight:600;white-space:nowrap;font-family:var(--fm);text-transform:uppercase;letter-spacing:.04em}
+.status.done{background:#e6f6ee;color:var(--live)}
+.status.add{background:var(--acc-soft);color:var(--acc-2)}
+.status.ops{background:var(--paper-2);color:var(--warn)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin:0 0 18px;font-size:13px;color:var(--mute)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.note-callout{background:var(--paper-2);border:1.5px solid var(--rule-2);border-radius:var(--radius-sm);padding:14px 18px;color:#5c4d24;font-size:14px;margin-bottom:20px}
+.internal-banner{background:var(--ink);color:#fff;text-align:center;font-size:11px;padding:8px 24px;font-family:var(--fm);letter-spacing:.08em;text-transform:uppercase}
+
+@media (max-width:1024px){
+  .header-main{grid-template-columns:1fr;gap:12px}
+  .header-actions{justify-content:flex-start}
+  .console-head h1{font-size:30px}
+  .intent-grid{grid-template-columns:repeat(2,1fr)}
+  .arch-out{grid-template-columns:repeat(2,1fr)}
+  .arch-feed{grid-template-columns:repeat(2,1fr)}
+  .cards,.cards-4,.recommend,.login-grid,.state-cta{grid-template-columns:1fr 1fr}
+  .feature-grid,.seminar-layout,.form-shell{grid-template-columns:1fr}
+  .side-filter{position:static}
+  .product-row{grid-template-columns:1fr 1fr}
+  .footer-inner{grid-template-columns:1fr 1fr}
+}
+@media (max-width:720px){
+  .dateline-inner{font-size:10px}.dateline a{margin-left:12px}
+  .mobile-menu{display:block}
+  .nav-links{display:none;position:absolute;left:0;right:0;top:100%;background:#fff;border-top:1px solid var(--rule);box-shadow:var(--shadow);padding:10px 24px;flex-direction:column}
+  .nav-links.open{display:flex}
+  .nav-inner{padding:10px 24px}.nav-link{padding:11px 0}
+  .console-head h1{font-size:25px}
+  .console-bar{flex-wrap:wrap}.console-bar input{width:100%}
+  .intent-grid,.cards,.cards-4,.recommend,.login-grid,.route-options,.field-grid,.faq-strip,.state-cta,.product-row,.arch-out,.arch-feed{grid-template-columns:1fr}
+  .product-cell{border-right:0;border-bottom:1px solid var(--rule)}
+  .news-item{grid-template-columns:1fr}.seminar-card{grid-template-columns:1fr}.footer-inner{grid-template-columns:1fr 1fr}
+  .assistant-panel{width:88vw}
+  .section-title{display:block}
+}
+
+/* ===== 統一アシスタント（ヒーロー＝全体表示） ===== */
+.assistant-hero{padding:24px}
+.ah-head{display:flex;gap:12px;align-items:center;padding-bottom:14px;border-bottom:1px solid var(--rule);margin-bottom:14px}
+.ah-ava{width:40px;height:40px;border-radius:8px;background:var(--ink);color:#fff;display:grid;place-items:center;font-family:var(--fs);font-weight:700;flex:0 0 40px}
+.ah-head strong{font-family:var(--fs);font-size:16px;display:block}
+.ah-head .ah-sub{color:var(--mute);font-size:13px}
+.ah-thread{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.ah-msg{background:var(--bg);border:1px solid var(--rule);border-radius:10px;padding:12px 14px;font-size:14px;max-width:78%}
+.ah-msg.me{align-self:flex-end;background:var(--acc-soft);border-color:#c5d0ff;color:#22356f}
+.ah-msg .sub{display:block;color:var(--mute);font-size:12px;margin-top:4px}
+.ah-msg .ah-cta{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.ah-input{display:flex;gap:10px;margin-top:14px}
+.ah-input input{flex:1;border:1.5px solid var(--frame);border-radius:var(--radius-sm);padding:0 16px;height:50px;font-size:15px;background:#fff;font-family:var(--fb)}
+.ah-input input:focus{border-color:var(--acc)}
+.ah-input button{border:0;background:var(--acc);color:#fff;border-radius:var(--radius-sm);padding:0 22px;font-weight:700;cursor:pointer}
+.ah-input button:hover{background:var(--acc-2)}
+.console-hint strong{color:var(--ink)}
+
+/* ヘッダーのキーワード検索を“検索”と明示 */
+.header-search:focus-within input{border-color:var(--acc)}
+.kw-tag{position:absolute;left:-1px;top:-9px;font-family:var(--fm);font-size:9px;letter-spacing:.1em;color:var(--mute)}
+
+/* ドック＝同一アシスタントの最小化（ヒーロー表示中は隠す） */
+.assistant-dock{transition:opacity .25s, transform .25s}
+.assistant-dock.hide{opacity:0;transform:translateY(12px) scale(.96);pointer-events:none}
+.assistant-launch:before{content:"";width:18px;height:18px;border-radius:5px;background:#fff;color:var(--ink);display:grid;place-items:center;font-size:11px;font-family:var(--fs);font-weight:700}
+.assistant-launch:before{content:"税"}
+
+/* ===== 知識基盤デモ（何ができるか） ===== */
+.kb-demo{padding:26px;margin-top:20px}
+.kb-lead{margin:0 0 14px;color:var(--mute);font-size:14px}
+.kb-qs{display:flex;flex-wrap:wrap;gap:8px}
+.kb-qs button{text-align:left;border:1.5px solid var(--rule-2);background:#fff;border-radius:var(--radius-sm);padding:11px 14px;cursor:pointer;font-size:14px;font-weight:500;transition:.12s}
+.kb-qs button:hover,.kb-qs button.active{border-color:var(--acc);color:var(--acc);background:var(--acc-soft)}
+.kb-card{margin-top:18px;border-top:1px dashed var(--rule-2);padding-top:18px;animation:fade .25s ease}
+.kb-answer{display:flex;gap:10px;align-items:flex-start;font-size:15px;line-height:1.7}
+.kb-answer .resp-badge{margin-top:3px}
+.kb-block{margin-top:16px}
+.kb-label{font-family:var(--fm);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin-bottom:8px}
+.kb-sources{display:grid;gap:8px}
+.kb-src{display:flex;gap:10px;align-items:center;border:1px solid var(--rule);border-radius:var(--radius-sm);padding:10px 12px;background:#fff}
+.kb-src:hover{border-color:var(--acc)}
+.kb-src .src-tag{flex:0 0 auto;font-family:var(--fm);font-size:10px;letter-spacing:.06em;text-transform:uppercase;padding:3px 7px;border-radius:3px;background:var(--paper-2);color:#46505f}
+.kb-src .src-tag.a{background:var(--acc-soft);color:var(--acc-2)}
+.kb-src .src-tag.f{background:#eef2f6;color:#475569}
+.kb-src .src-tag.p{background:#e6f6ee;color:var(--live)}
+.kb-src .src-tag.s{background:#fff1e6;color:#a4641a}
+.kb-src .src-t{font-size:14px;font-weight:500;flex:1}
+.kb-src .src-go{font-family:var(--fm);font-size:11px;color:var(--acc)}
+.kb-related{display:flex;gap:10px;flex-wrap:wrap}
+</style><div id="zk-app"><div class="dateline"><div class="dateline-inner"><div>ZEIMU KENKYUKAI ／ 税務・会計実務の総合プラットフォーム</div><div>SYSTEM 2026.06.19 <a href="login.html">会員サイト</a><a href="contact.html">問い合わせ</a></div></div><header class="site-header">
+  <div class="header-main">
+    <a class="logo" href="index.html" aria-label="税務研究会 ホーム"><div class="logo-mark">税</div><div class="logo-text"><strong>税務研究会</strong><span>ZEIMU KENKYUKAI</span></div></a>
+    <form class="header-search" action="search.html"><span class="kw-tag">KEYWORD</span><input type="search" placeholder="キーワード検索　例：インボイス、リース"><button class="search-submit">検索</button></form>
+    <div class="header-actions"><a class="btn btn-secondary" href="login.html">ログイン</a><a class="btn btn-primary" href="contact.html">資料請求</a></div>
+  </div>
+  <nav class="navbar" aria-label="グローバルナビゲーション"><div class="nav-inner"><button class="mobile-menu" aria-controls="nav-links" aria-expanded="false">メニュー</button><div class="nav-links" id="nav-links"><a class="nav-link active" href="index.html">ホーム</a><a class="nav-link " href="products.html">商品・サービス</a><a class="nav-link " href="zeimu-tsushin.html">税務通信シリーズ</a><a class="nav-link " href="seminars.html">セミナー</a><a class="nav-link " href="contact.html">サポート</a></div></div></nav>
+</header><div class="zk-page" data-page="index">
+<section class="console-wrap"><div class="container">
+  <div class="console-head"><span class="annot acc">AI-NATIVE</span><span class="annot">税研アシスタント</span><span class="annot live">● 2035 READY</span></div>
+  <div class="console-head"><h1>ご用件は、話すだけ。</h1></div>
+  <div class="module assistant-hero" id="hero-assistant"><span class="module-tab">MODULE 01 ／ 税研アシスタント</span>
+    <div class="ah-head"><span class="ah-ava">税</span><div><strong>税研アシスタント</strong><span class="ah-sub">用件・質問を話すと、回答と最適な導線にご案内します</span></div></div>
+    <div class="ah-thread" id="ah-thread"><div class="ah-msg">こんにちは。「インボイスの最新記事」「セミナーを探す」「解約したい」など、用件や質問をどうぞ。下のボタンからも選べます。</div></div>
+    <div class="intent-chips" id="intent-chips">
+      <button class="chip" data-intent="search"><b>01</b>調べる</button>
+      <button class="chip" data-intent="learn"><b>02</b>学ぶ・本・セミナー</button>
+      <button class="chip" data-intent="subscribe"><b>03</b>購読・会員</button>
+      <button class="chip" data-intent="tools"><b>04</b>ツール・DB</button>
+      <button class="chip" data-intent="login"><b>05</b>ログイン</button>
+      <button class="chip" data-intent="trial"><b>06</b>お試し</button>
+      <button class="chip" data-intent="contract"><b>07</b>契約・購入</button>
+      <button class="chip" data-intent="cancel"><b>08</b>解約</button>
+      <button class="chip" data-intent="contact"><b>09</b>問い合わせ</button>
+      <button class="chip" data-intent="browse"><b>10</b>とりあえず見る</button>
+    </div>
+    <div class="ah-input"><input id="ah-input" type="text" placeholder="用件・質問を入力（例：新リース会計基準の適用時期は？）"><button id="ah-send">送信</button></div>
+    <p class="console-hint">語句だけで探すなら、上部の<strong>キーワード検索</strong>が速いです ／ 用件・質問は<strong>アシスタント</strong>へ。右下のボタンは同じアシスタントの最小化表示です。</p>
+  </div>
+</div></section>
+
+<section class="section"><div class="container">
+  <div class="section-title"><div><p class="kicker">MODULE 02 ／ INTENT MAP</p><h2>用件の全体マップ</h2><p>「誰か」ではなく「何をしに来たか」で入口を用意。立場が決まっていない人も迷いません。</p></div></div>
+  <div class="intent-grid" id="intent-grid">
+    <a class="intent-node" data-intent="search" href="search.html"><div class="ix">01 / SEARCH</div><h3>税務情報を調べる</h3><p>記事・FAQ・過去ニュースを横断検索。</p><div class="go">横断検索</div></a>
+    <a class="intent-node" data-intent="learn" href="seminars.html"><div class="ix">02 / LEARN</div><h3>本・セミナーで学ぶ</h3><p>書籍、会場・Live・Webセミナー。</p><div class="go">学ぶ</div></a>
+    <a class="intent-node" data-intent="subscribe" href="products.html"><div class="ix">03 / SUBSCRIBE</div><h3>購読・会員になる</h3><p>定期刊行物・会員制度・特典。</p><div class="go">購読・会員</div></a>
+    <a class="intent-node" data-intent="tools" href="zeimu-tsushin.html"><div class="ix">04 / TOOLS</div><h3>ツール・DBを使う</h3><p>データベース、各種実務ツール。</p><div class="go">ツール</div></a>
+    <a class="intent-node" data-intent="login" href="login.html"><div class="ix">05 / LOGIN</div><h3>ログインする</h3><p>契約商品・会員種別で入口を案内。</p><div class="go">ログイン先</div></a>
+    <a class="intent-node" data-intent="trial" href="contact.html"><div class="ix">06 / TRIAL</div><h3>お試しする</h3><p>DB・読者限定ページの無料体験。</p><div class="go">お試しID</div></a>
+    <a class="intent-node" data-intent="contract" href="zeimu-tsushin.html"><div class="ix">07 / CONTRACT</div><h3>契約・購入する</h3><p>紙・DB・セット・会員価格で申込。</p><div class="go">購入・申込</div></a>
+    <a class="intent-node" data-intent="cancel" href="contact.html"><div class="ix">08 / CANCEL</div><h3>解約する</h3><p>契約状況の確認と手続き案内。</p><div class="go">解約相談</div></a>
+    <a class="intent-node" data-intent="contact" href="contact.html"><div class="ix">09 / CONTACT</div><h3>問い合わせる</h3><p>用途別に最適な窓口へ分岐。</p><div class="go">問い合わせ</div></a>
+    <a class="intent-node" data-intent="browse" href="search.html"><div class="ix">10 / BROWSE</div><h3>とりあえず見る</h3><p>今週の注目・新着・特集。</p><div class="go">注目を見る</div></a>
+  </div>
+</div></section>
+
+<section class="section" style="padding-top:0"><div class="container">
+  <div class="section-title"><div><p class="kicker">MODULE 03 ／ KNOWLEDGE ARCHITECTURE</p><h2>2035年を見据えた情報基盤</h2><p>記事・FAQ・商品・セミナー・会員情報を共通IDで束ね、人にもAIにも同じ知識を返す設計。</p></div></div>
+  <div class="arch">
+    <div class="arch-feed"><div>記事・ニュース</div><div>FAQ</div><div>商品・会員情報</div><div>セミナー</div></div>
+    <div class="arch-pipe"></div>
+    <div class="arch-core"><div class="t">統一ナレッジ層（共通ID・構造化データ）</div><div class="s">SCHEMA.ORG ／ JSON-LD ／ KNOWLEDGE GRAPH</div></div>
+    <div class="arch-pipe"></div>
+    <div class="arch-out">
+      <div class="arch-card"><div class="ic">OUT 01</div><h4>横断検索</h4><p>記事・商品・セミナー</p></div>
+      <div class="arch-card"><div class="ic">OUT 02</div><h4>AIアシスタント</h4><p>RAGで根拠付き回答</p></div>
+      <div class="arch-card"><div class="ic">OUT 03</div><h4>API ／ MCP</h4><p>外部AIから接続</p></div>
+      <div class="arch-card"><div class="ic">OUT 04</div><h4>営業・CS支援</h4><p>社内AIで案内自動化</p></div>
+      <div class="arch-card"><div class="ic">OUT 05</div><h4>パーソナライズ</h4><p>契約状態で最適化</p></div>
+    </div>
+  </div>
+
+  <div class="kb-demo module"><span class="module-tab">DEMO ／ 知識基盤に聞く</span>
+    <p class="kb-lead">統一ナレッジ層が、記事・FAQ・商品・セミナーを横断して<strong>1つの回答＋出典＋次のアクション</strong>にまとめます。例を選んでください。</p>
+    <div class="kb-qs" id="kb-qs">
+      <button data-q="invoice" class="active">インボイスの登録番号はどう確認する？</button>
+      <button data-q="lease">新リース会計基準はいつから適用？</button>
+      <button data-q="ebook">電子帳簿保存の対象書類は？</button>
+    </div>
+    <div class="kb-card" id="kb-card">
+      <div class="kb-answer"><span class="resp-badge">回答</span><div id="kb-answer-text">—</div></div>
+      <div class="kb-block"><div class="kb-label">根拠（横断した出典）</div><div class="kb-sources" id="kb-src"></div></div>
+      <div class="kb-block"><div class="kb-label">関連・次のアクション</div><div class="kb-related" id="kb-rel"></div></div>
+    </div>
+  </div>
+</div></section>
+</div><div class="zk-page" data-page="products" style="display:none">
+<section class="page-hero"><div class="page-hero-inner"><div class="breadcrumb">ホーム / 商品・サービス</div><h1>商品・サービスを探す</h1><p>情報誌、データベース、会員制度、セミナー、書籍を、目的・対象者・商品カテゴリから探せます。</p><div class="toolbar"><input placeholder="商品名・キーワード"><select><option>目的から探す</option><option>最新情報を読みたい</option><option>過去記事を検索したい</option><option>研修を受けたい</option></select><select><option>対象者</option><option>企業経理・財務</option><option>税理士・会計事務所</option><option>はじめての方</option></select><button class="btn btn-primary">検索</button></div></div></section>
+
+<section class="section"><div class="container"><div class="section-title"><div><div class="eyebrow">Products</div><h2>主な商品・サービス</h2></div><div class="filter-chips"><button class="filter-chip active">すべて</button><button class="filter-chip">情報誌</button><button class="filter-chip">DB</button><button class="filter-chip">会員制度</button><button class="filter-chip">セミナー</button></div></div><div class="cards"><a class="card" href="zeimu-tsushin.html"><div class="tag tag-red">情報誌</div><h3>週刊 税務通信</h3><p>税の専門記者が取材する税務専門誌。毎週月曜日発行。</p><div class="meta"><span class="tag">紙で読む</span><span class="tag">電子版</span></div></a><a class="card" href="zeimu-tsushin.html"><div class="tag tag-blue">DB</div><h3>税務通信データベース</h3><p>税務通信の過去記事や関連コンテンツを検索・確認。</p><div class="meta"><span class="tag">検索</span><span class="tag">バックナンバー</span></div></a><a class="card" href="zeimu-tsushin.html"><div class="tag tag-red">セット</div><h3>週刊 税務通信＋DB</h3><p>紙媒体とWeb版を併用し、収集・整理・確認を効率化。</p><div class="meta"><span class="tag">おすすめ</span><span class="tag">限定解説</span></div></a><a class="card"><div class="tag">情報誌</div><h3>週刊 経営財務</h3><p>企業会計と企業財務の専門週刊誌。</p></a><a class="card" id="members"><div class="tag tag-green">会員制度</div><h3>企業懇話会</h3><p>企業の経理・財務部門向けの会員制度。</p></a><a class="card"><div class="tag tag-green">会員制度</div><h3>税理士懇話会</h3><p>税理士登録者向けの会員制度。</p></a><a class="card" href="seminars.html"><div class="tag tag-blue">セミナー</div><h3>税研実務セミナー</h3><p>会場・Live・Webセミナーから実務テーマを学ぶ。</p></a><a class="card"><div class="tag">書籍</div><h3>税務・会計書籍</h3><p>実務に役立つ書籍・電子版を購入できます。</p></a><a class="card" href="contact.html"><div class="tag tag-red">相談</div><h3>どれを選ぶか相談する</h3><p>用途や契約状況に合わせて、必要な資料やサービスをご案内します。</p></a></div></div></section>
+<section class="section"><div class="container"><div class="section-title"><div><div class="eyebrow">At a glance</div><h2>会員制度・商品の早見表</h2><p>対象者、使えるコンテンツ、ログイン先、会員価格の対象を1枚で。営業・CSの案内にもそのまま使えます。</p></div></div>
+<div class="table-wrap"><table class="compare-table"><thead><tr><th>サービス</th><th>主な対象者</th><th>使えるコンテンツ</th><th>ログイン先</th><th>会員価格</th><th>次の行動</th></tr></thead><tbody>
+<tr><th>週刊 税務通信</th><td>企業経理・税理士</td><td>最新号・実務解説（紙／電子版）</td><td>読者専用ページ</td><td><span class="dash">—</span></td><td><a class="btn-text" href="zeimu-tsushin.html">詳しく</a></td></tr>
+<tr><th>税務通信データベース</th><td>過去記事を検索したい方</td><td>記事検索・バックナンバー</td><td>税研ウェブサービス</td><td><span class="dash">—</span></td><td><a class="btn-text" href="contact.html">お試しID</a></td></tr>
+<tr><th>企業懇話会</th><td>企業の経理・財務部門</td><td>会員限定情報・勉強会・Webセミナー</td><td>各種会員サイト</td><td><span class="check">対象</span></td><td><a class="btn-text" href="contact.html">資料請求</a></td></tr>
+<tr><th>税理士懇話会</th><td>税理士・会計事務所</td><td>会員限定情報・相談・Webセミナー</td><td>各種会員サイト</td><td><span class="check">対象</span></td><td><a class="btn-text" href="contact.html">資料請求</a></td></tr>
+<tr><th>税研実務セミナー</th><td>実務を学びたい方</td><td>会場・Live・Webセミナー</td><td>かんたん購入／会員サイト</td><td><span class="check">会員は割引</span></td><td><a class="btn-text" href="seminars.html">探す</a></td></tr>
+</tbody></table></div>
+<p style="color:var(--muted);font-size:13px;margin:10px 2px 0">「会員価格」が対象のサービスは、ログインすると申込時に自動で適用されます。どれを選ぶか迷う場合は<a href="contact.html" style="color:var(--red);font-weight:700">相談・資料請求</a>へ。</p>
+</div></section>
+<section class="section product-strip"><div class="container"><div class="section-title"><div><div class="eyebrow">For beginners</div><h2>はじめての方へ</h2><p>商品選びに迷ったら、まず3つの質問から確認できます。</p></div></div><div class="recommend"><div class="card"><h3>毎週の税務情報を追いたい</h3><p>週刊 税務通信がおすすめです。紙で全体を見渡し、電子版で持ち歩けます。</p><a class="btn-text" href="zeimu-tsushin.html">詳しく見る</a></div><div class="card"><h3>過去記事を検索したい</h3><p>税務通信データベースで、バックナンバーや関連情報を検索できます。</p><a class="btn-text" href="zeimu-tsushin.html">比較する</a></div><div class="card"><h3>社内研修・実務研修をしたい</h3><p>税研実務セミナーで、会場・Live・Webの形式から選べます。</p><a class="btn-text" href="seminars.html">セミナーを探す</a></div></div></div></section>
+</div><div class="zk-page" data-page="zeimu-tsushin" style="display:none">
+<section class="page-hero"><div class="page-hero-inner"><div class="breadcrumb">ホーム / 商品・サービス / 税務通信シリーズ</div><h1>税務通信シリーズの選び方</h1><p>紙で全体を読む、データベースで検索する、紙とWeb版を併用する。利用シーンに合わせて選べます。</p><div class="inline-actions"><a class="btn btn-primary" href="contact.html">資料請求・お試しID</a><a class="btn btn-secondary" href="#compare">比較表を見る</a><a class="btn btn-secondary" href="login.html">契約中の方はこちら</a></div></div></section>
+<section class="section"><div class="container"><div class="section-title"><div><div class="eyebrow">Your next step</div><h2>今のあなたに合う「最初の一歩」</h2><p>状態によって押すべきボタンは1つだけ。迷わないよう第一CTAを分けています。</p></div></div>
+<div class="state-cta">
+  <div class="state-card"><div class="state-label">検討中の方</div><h3>違いを比較したい</h3><p>紙・DB・セットの違いと、会員制度との関係を比較表で確認できます。</p><a class="btn btn-secondary" href="#compare">比較表を見る</a></div>
+  <div class="state-card is-primary"><div class="state-label">無料で試したい方</div><h3>お試しIDがほしい</h3><p>税務通信データベースを期間限定で体験。商品ページから来た場合は自動で選択されます。</p><a class="btn btn-primary" href="contact.html">お試しIDを申し込む</a></div>
+  <div class="state-card"><div class="state-label">申込を決めた方</div><h3>購入・申込する</h3><p>紙・DB・セットから選んで申込へ。会員の方は会員価格が適用されます。</p><a class="btn btn-secondary" href="contact.html">購入・申込へ</a></div>
+  <div class="state-card"><div class="state-label">契約中の方</div><h3>ログイン・使い方</h3><p>契約商品から正しいログイン先へ。使い方ガイドもこちらです。</p><a class="btn btn-secondary" href="login.html">ログイン先を確認</a></div>
+</div></div></section>
+<section class="section" style="padding-top:0"><div class="container"><div class="cards"><div class="card"><span class="tag tag-red">紙で読む</span><h3>週刊 税務通信</h3><p>毎週の税務ニュースと実務解説を紙面で一覧。電子版アプリも利用できます。</p><p class="price">39,600円</p><a class="btn btn-secondary" href="contact.html">資料請求</a></div><div class="card"><span class="tag tag-blue">検索する</span><h3>税務通信データベース</h3><p>過去記事、関連コンテンツ、バックナンバーを検索して確認。</p><p class="price">商品ページで確認</p><a class="btn btn-secondary" href="contact.html">お試しIDを申し込む</a></div><div class="card"><span class="tag tag-red">おすすめ</span><h3>週刊 税務通信＋DB</h3><p>紙媒体とWeb版を併用。収集・整理・確認を効率化します。</p><p class="price">52,800円</p><a class="btn btn-primary" href="contact.html">資料請求</a></div></div></div></section>
+<section class="section" id="compare"><div class="container"><div class="section-title"><div><div class="eyebrow">Comparison</div><h2>比較表</h2><p>営業・CSからの案内にも使える、シリーズ横断の比較です。</p></div></div><div class="table-wrap"><table class="compare-table"><thead><tr><th>比較項目</th><th>週刊 税務通信</th><th>税務通信データベース</th><th>週刊 税務通信＋DB</th><th>会員制度との関係</th></tr></thead><tbody><tr><th>向いている方</th><td>毎週の改正動向・実務情報を紙で確認したい方</td><td>過去記事や関連記事を必要な時に検索したい方</td><td>紙で読み、Webで検索もしたい方</td><td>勉強会・Webセミナー・交流も活用したい方</td></tr><tr><th>主な使い方</th><td>最新号を読む、展望欄で流れを把握</td><td>記事検索、バックナンバー確認</td><td>紙面で全体把握＋DBで深掘り</td><td>会員向け情報・セミナー・勉強会を併用</td></tr><tr><th>バックナンバー検索</th><td><span class="dash">一部</span></td><td><span class="check">利用可</span></td><td><span class="check">利用可</span></td><td>契約内容により異なる</td></tr><tr><th>電子版・Web版</th><td>電子版アプリ</td><td>Web版</td><td>電子版＋Web版</td><td>会員サイトで一部利用</td></tr><tr><th>限定解説</th><td><span class="dash">—</span></td><td>一部あり</td><td><span class="check">セット限定解説</span></td><td>会員限定コンテンツあり</td></tr><tr><th>付録</th><td>法人税申告書の実務</td><td>電子版付録の利用あり</td><td>電子版付録の利用あり</td><td>契約内容により異なる</td></tr><tr><th>ログイン先</th><td>読者専用ページ／電子版</td><td>税研ウェブサービス</td><td>税研ウェブサービス</td><td>各会員サイト</td></tr><tr><th>次の行動</th><td><a class="btn btn-secondary" href="contact.html">資料請求</a></td><td><a class="btn btn-secondary" href="contact.html">お試しID</a></td><td><a class="btn btn-primary" href="contact.html">相談・資料請求</a></td><td><a class="btn btn-secondary" href="products.html#members">会員制度を見る</a></td></tr></tbody></table></div>
+<div class="freshness">
+  <span class="fr"><span class="dot"></span><b>情報更新日</b>　2026/06/16</span>
+  <span class="fr"><b>価格・内容</b>　最新の情報をご確認ください</span>
+</div>
+<p style="color:var(--muted);font-size:13px;margin:10px 2px 0">価格・サービス内容は変更となる場合があります。詳細は資料請求またはお問い合わせください。</p>
+</div></section>
+<section class="section"><div class="container"><div class="section-title"><div><div class="eyebrow">Use case</div><h2>利用シーンから選ぶ</h2></div></div><div class="recommend"><div class="card"><h3>まずは税務情報を毎週追いたい</h3><p>紙面で見出しを確認し、必要な記事を読む使い方に向いています。</p><a class="btn-text" href="contact.html">見本誌を請求</a></div><div class="card"><h3>顧問先・社内からの質問に備えたい</h3><p>過去記事を検索できるDBの併用が便利です。</p><a class="btn-text" href="contact.html">お試しIDを申し込む</a></div><div class="card"><h3>若手・新人にも使ってほしい</h3><p>セット限定解説やReader’s Clubなど、読み始めを支えるコンテンツを案内できます。</p><a class="btn-text" href="seminars.html">関連セミナーを見る</a></div></div></div></section>
+</div><div class="zk-page" data-page="seminars" style="display:none">
+<section class="page-hero"><div class="page-hero-inner"><div class="breadcrumb">ホーム / セミナー</div><h1>税研実務セミナーを探す</h1><p>会場、Live配信、Webセミナーを横断して検索。会員価格の適用方法も、申込前に確認できます。</p></div></section>
+<section class="section"><div class="container seminar-layout"><aside class="side-filter"><h3>条件で絞り込む</h3><div class="filter-group"><label>キーワード</label><input placeholder="例：リース、月次決算"></div><div class="filter-group"><label>受講形式</label><select><option>すべて</option><option>Live配信</option><option>会場</option><option>Webセミナー</option></select></div><div class="filter-group"><label>分野</label><select><option>税務</option><option>会計</option><option>経理実務</option><option>国際税務</option></select></div><div class="filter-group"><label>会員価格</label><select><option>利用できるものを表示</option><option>一般価格のみ</option></select></div><button class="btn btn-primary" style="width:100%">検索する</button></aside><div><div class="notice">会員価格でのお申込みは、契約中の会員サイトからログインすると自動で適用できます。ログイン先が不明な場合は「ログイン先を確認」へ進んでください。</div><article class="seminar-card"><div><div class="seminar-meta"><span class="tag tag-blue">Live配信</span><span class="tag">税務</span><span class="tag">新基準対応</span></div><h3>新リース会計基準 適用後の税務・会計処理</h3><p>新リース会計基準の適用に向けて、税務・会計処理と申告調整の実務対応を解説します。</p><div class="inline-actions"><a class="btn-text" href="#detail">詳細を見る</a><a class="btn-text" href="login.html">会員価格を確認</a></div></div><div class="seminar-price"><div class="regular">一般価格</div><div>33,000円</div><div class="member">会員価格あり</div><a class="btn btn-primary" href="login.html">会員価格で申込</a><a class="btn btn-secondary" href="#" style="margin-top:8px">通常申込</a></div></article><article class="seminar-card"><div><div class="seminar-meta"><span class="tag tag-green">会場</span><span class="tag">経理入門</span></div><h3>経理業務の入門講座 講義＋グループワーク</h3><p>新人・新任者向けに、経理業務の基礎を体系的に学べる講座です。</p><div class="inline-actions"><a class="btn-text">詳細を見る</a><a class="btn-text" href="contact.html">法人申込を相談</a></div></div><div class="seminar-price"><div class="regular">一般価格</div><div>28,600円</div><div class="member">会員価格あり</div><a class="btn btn-primary" href="login.html">会員価格で申込</a><a class="btn btn-secondary" href="#" style="margin-top:8px">通常申込</a></div></article><article class="seminar-card"><div><div class="seminar-meta"><span class="tag tag-blue">Webセミナー</span><span class="tag">法人税</span></div><h3>法人税実務 基礎から申告書作成まで</h3><p>いつでも視聴できるWebセミナー。契約中サービスによって視聴方法が異なります。</p><div class="inline-actions"><a class="btn-text" href="login.html">視聴ログイン</a><a class="btn-text">詳細を見る</a></div></div><div class="seminar-price"><div class="regular">Webセミナー</div><div class="member">契約者視聴可</div><a class="btn btn-primary" href="login.html">視聴する</a></div></article></div></div></section>
+<section class="section product-strip" id="detail"><div class="container"><div class="section-title"><div><div class="eyebrow">Member price</div><h2>会員価格で申し込む</h2><p>申込画面で会員価格の適用状況をその場で表示。気づかず一般価格で進む事故を防ぎます。</p></div></div>
+<div class="seminar-layout" style="margin-bottom:26px">
+  <div class="cart-mock">
+    <h3>申込内容</h3>
+    <div class="cart-line"><span class="ttl">新リース会計基準セミナー ×1</span><span class="amt" id="cart-amt">33,000円</span></div>
+    <div class="member-alert" id="m-alert">
+      <span class="mark">!</span>
+      <div><strong>会員価格が適用されていません</strong><p>企業懇話会・税理士懇話会などの会員の方は、ログインすると会員価格が自動で適用されます。申込内容はそのまま保持されます。</p></div>
+    </div>
+    <div class="member-applied" id="m-applied">
+      <span class="mark">✓</span>
+      <div><strong>会員価格を適用しました</strong><p>税理士懇話会の会員価格が適用されています。受講者情報の入力はこのまま続けられます。</p></div>
+    </div>
+    <div class="cart-total"><span>お支払い予定額</span><span class="num" id="cart-total">33,000円</span></div>
+    <div class="inline-actions"><button class="btn btn-primary" id="apply-member" type="button">会員価格を適用する（ログイン）</button><a class="btn btn-secondary" href="#">このまま一般価格で進む</a></div>
+  </div>
+  <aside class="side-filter" style="position:static"><h3>会員価格を使うには</h3>
+    <div class="steps" style="grid-template-columns:1fr;gap:10px">
+      <div class="step"><strong>会員種別を確認</strong><p>企業懇話会、税理士懇話会、税研ウェブサービスなど。</p></div>
+      <div class="step"><strong>ログイン</strong><p>申込内容を保持したまま、税研ウェブサービスのログインへ。</p></div>
+      <div class="step"><strong>自動で会員価格に</strong><p>戻った申込画面で会員価格の適用を確認できます。</p></div>
+    </div>
+  </aside>
+</div><div class="inline-actions"><a class="btn btn-primary" href="login.html">ログイン先を確認</a><a class="btn btn-secondary" href="contact.html">会員種別がわからない</a></div></div></section>
+</div><div class="zk-page" data-page="login" style="display:none">
+<section class="page-hero"><div class="page-hero-inner"><div class="breadcrumb">ホーム / ログイン</div><h1>ログイン先を選ぶ</h1><p>契約中の商品・会員制度・利用目的から、正しいログイン先へ進めます。</p></div></section>
+<section class="section"><div class="container"><div class="route-finder"><div class="section-title"><div><div class="eyebrow">Login finder</div><h2>何を利用しますか？</h2></div></div><div class="route-options" data-routes><button class="route-option active" data-route="db"><strong>記事・DBを使いたい</strong><span>税務通信DB、経営財務DBなど</span></button><button class="route-option" data-route="club"><strong>会員制度を使いたい</strong><span>企業懇話会、税理士懇話会など</span></button><button class="route-option" data-route="seminar"><strong>Webセミナーを見たい</strong><span>視聴ページ、会員価格申込</span></button><button class="route-option" data-route="store"><strong>購入履歴を確認したい</strong><span>オンラインストア、かんたん購入</span></button><button class="route-option" data-route="links"><strong>M&Aサービスを使いたい</strong><span>ZEIKEN LINKS</span></button><button class="route-option" data-route="unknown"><strong>ログイン先がわからない</strong><span>契約状況から確認</span></button></div><div class="route-result" id="route-result"><strong>税研ウェブサービスへ</strong><p>税務通信データベース、経営財務データベース、税務QAデータベース、国際税務データベースをご利用の方はこちらです。</p><a class="btn btn-primary" href="#">ログインする</a><a class="btn btn-secondary" href="contact.html">ログインできない</a></div></div></div></section>
+<section class="section"><div class="container"><div class="section-title"><div><div class="eyebrow">Services</div><h2>ログイン先一覧</h2></div></div><div class="login-grid"><a class="login-card"><span class="login-badge">DB</span><span><h3>税研ウェブサービス</h3><p>各種データベース・読者限定ページ</p><ul><li>税務通信データベース</li><li>経営財務データベース</li><li>税務QAデータベース</li></ul></span></a><a class="login-card"><span class="login-badge">会</span><span><h3>税懇クラブ・各種会員サイト</h3><p>会員制度の限定コンテンツ・勉強会</p><ul><li>企業懇話会</li><li>税理士懇話会</li><li>国際税務研究会</li></ul></span></a><a class="login-card"><span class="login-badge">学</span><span><h3>税研Webセミナー</h3><p>Webセミナーの視聴・受講履歴</p><ul><li>契約者向け視聴</li><li>スタディマップ</li></ul></span></a><a class="login-card"><span class="login-badge">購</span><span><h3>オンラインストア・かんたん購入</h3><p>購入、申込、購入履歴、領収書</p><ul><li>書籍・定期刊行誌</li><li>セミナー申込</li></ul></span></a></div></div></section>
+<section class="section product-strip"><div class="container"><div class="section-title"><div><div class="eyebrow">Member price</div><h2>会員価格でセミナーを申し込む</h2></div></div><div class="steps"><div class="step"><strong>会員サイトにログイン</strong><p>会員種別に合うログイン先を選びます。</p></div><div class="step"><strong>会員特典セミナーへ</strong><p>対象セミナー一覧を表示します。</p></div><div class="step"><strong>セミナー詳細を確認</strong><p>会員価格が適用されているか確認します。</p></div><div class="step"><strong>申込を完了</strong><p>申込履歴はマイページで確認できます。</p></div></div></div></section>
+</div><div class="zk-page" data-page="contact" style="display:none">
+<section class="page-hero"><div class="page-hero-inner"><div class="breadcrumb">ホーム / 資料請求・お問い合わせ</div><h1>資料請求・お問い合わせ</h1><p>長いフォームに入る前に、目的を選ぶだけで必要な入力項目と関連FAQを絞り込みます。</p></div></section>
+<section class="section"><div class="container form-shell"><aside class="purpose-list" data-purpose><button class="purpose-btn active" data-purpose-id="document">資料がほしい<span>見本誌・商品資料・お試しID</span></button><button class="purpose-btn" data-purpose-id="trial">無料お試しIDを使いたい<span>DB・読者限定ページの体験</span></button><button class="purpose-btn" data-purpose-id="login">ログインできない<span>ID、パスワード、ログイン先</span></button><button class="purpose-btn" data-purpose-id="memberprice">会員価格を使いたい<span>セミナー申込・会員特典</span></button><button class="purpose-btn" data-purpose-id="contract">契約内容を変更したい<span>住所、担当者、支払方法</span></button><button class="purpose-btn" data-purpose-id="cancel">解約について相談したい<span>契約状況確認・手続き</span></button><button class="purpose-btn" data-purpose-id="article">記事内容について確認したい<span>掲載記事、引用、内容照会</span></button></aside><div class="form-card"><div id="purpose-title"><span class="tag tag-red">資料請求</span><h2>必要な資料を選択してください</h2><p>商品ページから遷移した場合、対象商品は自動で選択されます。</p></div><form class="field-grid"><div class="field"><label>お名前</label><input placeholder="税研 太郎"></div><div class="field"><label>メールアドレス</label><input placeholder="example@zeiken.co.jp"></div><div class="field"><label>会社名・事務所名</label><input></div><div class="field"><label>電話番号</label><input></div><div class="field full"><label>ご希望の商品・資料</label><select><option>税務通信シリーズの比較資料</option><option>週刊 税務通信 見本誌</option><option>税務通信データベース お試しID</option><option>会員制度の資料</option><option>セミナー資料</option></select></div><div class="field full"><label>ご相談内容</label><textarea placeholder="知りたいこと、現在の契約状況などがあればご記入ください。"></textarea></div><div class="full inline-actions"><button class="btn btn-primary" type="button">入力内容を確認</button><a class="btn btn-secondary" href="login.html">ログイン先を確認</a></div></form><div class="faq-strip"><a class="faq-link">税務通信とDBの違い</a><a class="faq-link">会員価格の使い方</a><a class="faq-link">ログインできない場合</a></div></div></div></section>
+<section class="section product-strip"><div class="container"><div class="section-title"><div><div class="eyebrow">Self service</div><h2>よくある手続き</h2></div></div><div class="cards cards-4"><a class="card"><h3>住所・担当者変更</h3><p>契約情報の変更手続きへ進みます。</p></a><a class="card"><h3>支払方法変更</h3><p>請求書、口座引落、クレジットカードなど。</p></a><a class="card"><h3>購読・契約の確認</h3><p>契約商品、更新時期、利用IDを確認します。</p></a><a class="card"><h3>解約・停止の相談</h3><p>利用状況を確認し、手続き方法をご案内します。</p></a></div></div></section>
+</div><div class="zk-page" data-page="search" style="display:none">
+<section class="page-hero"><div class="page-hero-inner"><div class="breadcrumb">ホーム / 検索</div><h1>サイト内検索</h1><p>記事、商品、セミナー、FAQを横断して検索できます。</p><div class="toolbar"><input placeholder="インボイス、リース、税務通信DB" value="リース"><button class="btn btn-primary">検索</button></div></div></section><section class="section"><div class="container"><div class="tabs" data-tabs><button class="tab active" data-tab="all">すべて</button><button class="tab" data-tab="articles">記事</button><button class="tab" data-tab="products">商品</button><button class="tab" data-tab="seminars">セミナー</button><button class="tab" data-tab="faqs">FAQ</button></div><div class="tab-content active" id="all"><div class="news-list"><a class="news-item"><span class="tag tag-red">商品</span><span class="news-title">税務通信データベース</span><span class="pill-link">詳細</span></a><a class="news-item"><span class="tag tag-blue">セミナー</span><span class="news-title">新リース会計基準 適用後の税務・会計処理</span><span class="pill-link">申込</span></a><a class="news-item"><span class="tag">記事</span><span class="news-title">リース取引の税務 新会計基準適用後の取扱い</span><span class="pill-link">読む</span></a></div></div><div class="tab-content" id="articles"><div class="empty-state">記事検索結果を表示します。</div></div><div class="tab-content" id="products"><div class="empty-state">商品検索結果を表示します。</div></div><div class="tab-content" id="seminars"><div class="empty-state">セミナー検索結果を表示します。</div></div><div class="tab-content" id="faqs"><div class="empty-state">FAQ検索結果を表示します。</div></div></div></section></div><div class="zk-page" data-page="requirements" style="display:none">
+<section class="page-hero"><div class="page-hero-inner"><div class="breadcrumb">社内資料 / リニューアル要件対応表</div><h1>リニューアル要件 対応表</h1><p>志田の要件（No.2〜13）を、このモックでどこにどう反映したかの一覧です。今回の再提案では配色を青／モノクロ寄りに変更し、トップの重複導線を削減しました。森廣の No.1 と記入例は対象外です。</p></div></section>
+<section class="section"><div class="container">
+  <div class="note-callout">状態は <b>反映済み</b>（初期案で実装）／<b>今回補強</b>（追加・強化）／<b>運用・設計課題</b>（画面は概念提示、設計が別途必要）の3段階。各行の「反映先」から該当ページへ移動できます。</div>
+  <div class="legend">
+    <span><span class="status done">反映済み</span> 実装ずみ</span>
+    <span><span class="status add">今回補強</span> 追加・強化</span>
+    <span><span class="status ops">運用・設計課題</span> 設計が別途必要</span>
+  </div>
+  <div class="table-wrap"><table class="req-table"><thead><tr><th>No.</th><th>要件（1行）</th><th>状態</th><th>反映先</th><th>ひとことメモ</th></tr></thead><tbody>
+    <tr><td><span class="no">2</span></td><td>HP全体の役割が複雑化／入口ハブとして再定義</td><td><span class="status add">今回補強</span></td><td><a class="btn-text" href="index.html">トップ「意図ルーター」</a></td><td>立場（ペルソナ）依存をやめ、来訪意図を11のドアに整理（調べる/学ぶ/購読・会員/ツール/ログイン/試す/契約/問い合わせ/解約・変更/比較/はじめて）。曖昧な来訪はAIアシスタントが受ける。</td></tr>
+    <tr><td><span class="no">3</span></td><td>サイト横断のナビ・検索が分断</td><td><span class="status done">反映済み</span><span class="status add">今回補強</span></td><td><a class="btn-text" href="search.html">横断検索</a></td><td>検索をヘッダーとヒーローの1系統に統一（旧「ナレッジ検索」の重複を解消）。対象者別入口を併設。</td></tr>
+    <tr><td><span class="no">4</span></td><td>商品・会員制度・DB・セミナーの関係が分かりにくい</td><td><span class="status add">今回補強</span></td><td><a class="btn-text" href="products.html">会員制度・商品の早見表</a> ／ <a class="btn-text" href="zeimu-tsushin.html#compare">比較表</a></td><td>対象者・コンテンツ・ログイン先・会員価格対象を1枚で。営業・CSの案内にも流用可。</td></tr>
+    <tr><td><span class="no">5</span></td><td>商品ページのCTAが多く主導線が見えにくい</td><td><span class="status add">今回補強</span></td><td><a class="btn-text" href="zeimu-tsushin.html">状態別「最初の一歩」</a></td><td>検討中／無料体験／申込／契約中の4状態で第一CTAを1つに固定。</td></tr>
+    <tr><td><span class="no">6</span></td><td>資料請求フォームの入力負荷が高い</td><td><span class="status done">反映済み</span></td><td><a class="btn-text" href="contact.html">資料請求（目的別分岐）</a></td><td>目的を選ぶと必要項目だけ表示。商品ページからの遷移で資料種別を自動選択する想定。</td></tr>
+    <tr><td><span class="no">7</span></td><td>セミナー申込時の会員価格適用が分かりにくい</td><td><span class="status add">今回補強</span></td><td><a class="btn-text" href="seminars.html#detail">申込パネルで会員価格を適用</a></td><td>申込画面に「会員価格が未適用」を明示。ログインで申込内容を保持したまま自動適用するデモ付き。</td></tr>
+    <tr><td><span class="no">8</span></td><td>ログイン体系・IDの使い分けが分かりにくい</td><td><span class="status done">反映済み</span></td><td><a class="btn-text" href="login.html">ログイン先ファインダー</a></td><td>「何を利用したいか」で正しいログイン先を案内。将来のSSO検討余地もメモ。</td></tr>
+    <tr><td><span class="no">9</span></td><td>問い合わせフォームが多用途すぎて長い</td><td><span class="status done">反映済み</span></td><td><a class="btn-text" href="contact.html">お問い合わせ（用途別分岐）</a></td><td>資料／お試し／ログイン／会員価格／契約変更／解約／記事照会に入口を分割。</td></tr>
+    <tr><td><span class="no">10</span></td><td>古い文言・旧仕様が残っている</td><td><span class="status add">今回補強</span></td><td><a class="btn-text" href="zeimu-tsushin.html#compare">情報更新日の表示</a></td><td>顧客向けは「情報更新日」「価格・内容は変更となる場合があります」に簡素化。内部運用語（更新責任部署・公開期限・マスタ）は画面から削除し、運用ルールとして裏で持つ。</td></tr>
+    <tr><td><span class="no">11</span></td><td>同じ商品情報が複数ページに分散し更新漏れリスク</td><td><span class="status ops">運用・設計課題</span></td><td>サイト全体（商品マスタ）</td><td>顧客画面では見せず、商品マスタ＋共通コンポーネントで一元管理。CMS製品・権限設計のヒアリングが前提。</td></tr>
+    <tr><td><span class="no">12</span></td><td>外部フォーム・別基盤が多く計測が難しい</td><td><span class="status ops">運用・設計課題</span></td><td>サイト全体（基盤統合）</td><td>ユーティリティの入口は今回絞り込み済み。フォーム基盤・計測設計の統一は次工程でレビュー。</td></tr>
+    <tr><td><span class="no">13</span></td><td>AI時代に向けた情報提供・外部接続性が弱い</td><td><span class="status done">反映済み</span><span class="status add">今回補強</span></td><td><a class="btn-text" href="index.html">AIアシスタント＋2035基盤</a></td><td>常駐AIアシスタント（RAG）を全ページに。トップに基盤レイヤー（構造化データ/KG・MCP/公開API・SSO/パスキー・パーソナライズ）を明示し、2035年を見据えた“エージェント対応サイト”として位置づけ。</td></tr>
+  </tbody></table></div>
+</div></section>
+<section class="section product-strip"><div class="container"><div class="section-title"><div><div class="eyebrow">この再提案で変えた点</div><h2>フィードバック対応</h2></div></div>
+<div class="cards cards-4">
+  <div class="card"><h3>編集×ブループリント意匠</h3><p>明朝＋朱の角印の編集マストヘッドに、注釈付きブループリント（モノ罫・等幅注記）を重ねた革新側の意匠。</p></div>
+  <div class="card"><h3>意図ベースUXへ</h3><p>ペルソナ偏重をやめ、来訪意図11種をドア化。曖昧な来訪はAIアシスタントが受ける。</p></div>
+  <div class="card"><h3>AIサポート常駐</h3><p>全ページに税研アシスタントのドックを常駐。入力から最適な場所へルーティング。</p></div>
+  <div class="card"><h3>2035年の技術スタック</h3><p>構造化データ/KG・MCP/公開API・SSO・パーソナライズを基盤として明示し、外部AIから参照される前提に。</p></div>
+</div></div></section>
+</div><footer class="site-footer">
+  <div class="footer-inner">
+    <div><div class="footer-title">税務研究会</div><p style="color:#d2d9e4;margin:0;font-size:13px">税務・会計の実務情報を、調べる・学ぶ・使うための総合プラットフォーム。</p></div>
+    <div class="footer-col"><h3>Products</h3><a href="products.html">商品・サービス</a><a href="zeimu-tsushin.html">税務通信シリーズ</a><a href="products.html#members">会員制度</a><a href="#">書籍</a></div>
+    <div class="footer-col"><h3>Learn</h3><a href="seminars.html">セミナー</a><a href="seminars.html">Webセミナー</a><a href="#">スタディマップ</a><a href="#">無料コンテンツ</a></div>
+    <div class="footer-col"><h3>Support</h3><a href="login.html">ログイン先を選ぶ</a><a href="contact.html">資料請求</a><a href="contact.html">お問い合わせ</a><a href="#">FAQ</a></div>
+    <div class="footer-col"><h3>Related</h3><a href="#">ZEIKEN LINKS</a><a href="#">ZEIKEN PRESS</a><a href="#">税務研究会とは</a><a href="#">個人情報の保護</a></div>
+  </div>
+  <div class="footer-bottom">Copyright © Zeimu Kenkyukai. All rights reserved.</div>
+</footer><div class="assistant-dock" id="assistant-dock">
+  <div class="assistant-panel" id="assistant-panel">
+    <div class="ap-head"><span class="dot"></span><strong>税研アシスタント</strong><span class="annot">BETA</span></div>
+    <div class="ap-body" id="ap-body">
+      <div class="ap-msg">こんにちは。ご用件を教えてください。記事の検索、商品の比較、ログイン先の確認、解約の相談などに対応します。</div>
+      <div class="ap-quick"><button data-intent="search">記事を探す</button><button data-intent="login">ログインできない</button><button data-intent="trial">お試ししたい</button><button data-intent="cancel">解約したい</button></div></div><script>/* 税務研究会 モック 共通スクリプト */
+(function(){
+  /* モバイルメニュー */
+  var menu=document.querySelector('.mobile-menu'), nav=document.querySelector('.nav-links');
+  if(menu&&nav){menu.addEventListener('click',function(){nav.classList.toggle('open');menu.setAttribute('aria-expanded',nav.classList.contains('open'));});}
+
+  /* タブ */
+  document.querySelectorAll('[data-tabs]').forEach(function(group){
+    var tabs=group.querySelectorAll('.tab');
+    tabs.forEach(function(tab){tab.addEventListener('click',function(){
+      var id=tab.dataset.tab, scope=group.parentElement;
+      tabs.forEach(function(t){t.classList.remove('active');}); tab.classList.add('active');
+      scope.querySelectorAll('.tab-content').forEach(function(c){c.classList.remove('active');});
+      var content=scope.querySelector('#'+id); if(content) content.classList.add('active');
+    });});
+  });
+
+  /* ログイン先ファインダー */
+  var routeResult=document.querySelector('#route-result');
+  var routeCopy={
+    db:['税研ウェブサービスへ','税務通信DB、経営財務DB、税務QA、国際税務DBをご利用の方はこちら。','ログインする'],
+    club:['各種会員サイトへ','企業懇話会、税理士懇話会、国際税務研究会など会員限定コンテンツはこちら。','会員サイトへ'],
+    seminar:['税研Webセミナーへ','Webセミナーの視聴・受講履歴・契約者向け動画はこちら。','視聴ログイン'],
+    store:['オンラインストア・かんたん購入へ','書籍・刊行物・セミナーの購入履歴、請求情報はこちら。','マイページへ'],
+    links:['ZEIKEN LINKSへ','事業承継・M&A関連サービスをご利用の方はこちら。','LINKSへ'],
+    unknown:['契約状況を確認します','契約商品・会社名・メールから正しいログイン先を案内します。','問い合わせる']
+  };
+  document.querySelectorAll('[data-routes] .route-option').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      document.querySelectorAll('[data-routes] .route-option').forEach(function(b){b.classList.remove('active');});
+      btn.classList.add('active');
+      var d=routeCopy[btn.dataset.route]||routeCopy.db;
+      if(routeResult) routeResult.innerHTML='<strong>'+d[0]+'</strong><p>'+d[1]+'</p><a class="btn btn-primary" href="#">'+d[2]+'</a><a class="btn btn-secondary" href="contact.html">ログインできない</a>';
+    });
+  });
+
+  /* 問い合わせ 目的別 */
+  var purposeTitle=document.querySelector('#purpose-title');
+  var purposeMap={
+    document:['資料請求','必要な資料を選択してください','商品ページから遷移した場合、対象商品は自動で選択されます。'],
+    trial:['無料お試しID','お試ししたいサービスを選択してください','利用目的に応じたIDをお送りします。'],
+    login:['ログインサポート','ログインできないサービスを選択してください','ID・パスワード・ログイン先の確認をサポートします。'],
+    memberprice:['会員価格','会員価格を利用したいセミナーを選択してください','会員種別に応じた申込導線を案内します。'],
+    contract:['契約内容変更','変更したい内容を選択してください','住所・担当者・支払方法などの変更を受け付けます。'],
+    cancel:['解約相談','契約状況を確認します','解約前に利用状況・更新日・代替プランを確認できます。'],
+    article:['記事内容の確認','確認したい記事情報をご入力ください','掲載号・記事名・URLがあるとスムーズです。']
+  };
+  document.querySelectorAll('[data-purpose] .purpose-btn').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      document.querySelectorAll('[data-purpose] .purpose-btn').forEach(function(b){b.classList.remove('active');});
+      btn.classList.add('active');
+      var d=purposeMap[btn.dataset.purposeId]||purposeMap.document;
+      if(purposeTitle) purposeTitle.innerHTML='<span class="tag tag-red">'+d[0]+'</span><h2>'+d[1]+'</h2><p>'+d[2]+'</p>';
+    });
+  });
+
+  /* セミナー 会員価格の面内適用 */
+  var apply=document.querySelector('#apply-member');
+  if(apply){apply.addEventListener('click',function(){
+    var al=document.querySelector('#m-alert'),ap=document.querySelector('#m-applied'),amt=document.querySelector('#cart-amt'),total=document.querySelector('#cart-total');
+    if(al)al.classList.add('hide'); if(ap)ap.classList.add('show');
+    if(amt)amt.innerHTML='<span class="amt was">33,000円</span>26,400円'; if(total)total.textContent='26,400円';
+    apply.textContent='会員価格を適用済み'; apply.disabled=true; apply.style.opacity='.6';
+  });}
+
+  /* ===== 統一アシスタント（用件ルーティング） ===== */
+  var INTENT={
+    search:{t:"記事・FAQを横断検索します",d:"キーワードに一致する記事・ニュース・FAQ・商品・セミナーを横断して表示します。",h:"search.html",c:"横断検索へ"},
+    learn:{t:"本・セミナーを探します",d:"会場・Live・Webセミナーと関連書籍を一覧から探せます。",h:"seminars.html",c:"セミナーを探す"},
+    subscribe:{t:"購読・会員制度をご案内します",d:"定期刊行物の購読と、企業懇話会・税理士懇話会など会員制度の特典を比較できます。",h:"products.html",c:"購読・会員を見る"},
+    tools:{t:"ツール・データベースをご案内します",d:"税務通信DBなど、実務で使う検索ツールの選び方を表示します。",h:"zeimu-tsushin.html",c:"ツール・DBへ"},
+    login:{t:"正しいログイン先を確認します",d:"契約商品・会員種別・利用目的から、適切なログイン先へ案内します。",h:"login.html",c:"ログイン先を確認"},
+    trial:{t:"無料お試しをご案内します",d:"データベースや読者限定ページのお試しIDを請求できます。",h:"contact.html",c:"お試しIDを申し込む"},
+    contract:{t:"契約・購入の手続きへ進みます",d:"紙・DB・セットを比較して申込へ。会員の方は会員価格が適用されます。",h:"zeimu-tsushin.html",c:"購入・申込へ"},
+    cancel:{t:"解約のご相談を承ります",d:"契約状況・更新日を確認のうえ、解約手続きをご案内します。",h:"contact.html",c:"解約の相談へ"},
+    contact:{t:"最適な問い合わせ窓口へ振り分けます",d:"資料・お試し・ログイン・契約変更・解約・記事照会など、用途別に分岐します。",h:"contact.html",c:"問い合わせへ"},
+    browse:{t:"今週の注目をご案内します",d:"新着記事・特集・注目セミナーをまとめて表示します。",h:"search.html",c:"注目を見る"}
+  };
+  var KW=[
+    ["login",["ログイン","ログイ","サインイン","login","パスワード"]],
+    ["cancel",["解約","退会","やめ","停止","キャンセル"]],
+    ["trial",["お試し","試し","体験","無料","トライアル"]],
+    ["learn",["セミナー","研修","講座","本","書籍","学"]],
+    ["subscribe",["購読","会員","定期","サブスク","懇話"]],
+    ["tools",["データベース","ＤＢ","db","ツール"]],
+    ["contract",["契約","購入","申込","申し込","買"]],
+    ["contact",["問い合わせ","問合せ","質問","連絡","相談"]],
+    ["search",["調べ","記事","ニュース","faq","インボイス","リース","電子帳簿","税"]]
+  ];
+  function classify(text){
+    if(!text) return "browse"; var s=text.toLowerCase();
+    for(var i=0;i<KW.length;i++){var ws=KW[i][1];for(var j=0;j<ws.length;j++){if(s.indexOf(ws[j].toLowerCase())>=0)return KW[i][0];}}
+    return "search";
+  }
+  function botHTML(id){var x=INTENT[id]||INTENT.search;
+    return x.t+'<span class="sub">'+x.d+'</span><span class="ah-cta"><a class="btn btn-primary" href="'+x.h+'">'+x.c+'</a></span>';}
+  function append(thread,cls,html){var d=document.createElement('div');d.className='ah-msg'+(cls?' '+cls:'');d.innerHTML=html;thread.appendChild(d);thread.scrollTop=thread.scrollHeight;}
+
+  function wireAssistant(threadId,inputId,sendId,chipsId){
+    var thread=document.getElementById(threadId),inp=document.getElementById(inputId),send=document.getElementById(sendId);
+    function ask(text){ if(!text)return; append(thread,'me',text); setTimeout(function(){append(thread,'',botHTML(classify(text)));},260); }
+    if(send&&inp){send.addEventListener('click',function(){ask(inp.value.trim());inp.value='';});
+      inp.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();ask(inp.value.trim());inp.value='';}});}
+    if(chipsId){var chips=document.getElementById(chipsId);
+      if(chips)chips.addEventListener('click',function(e){var b=e.target.closest('.chip,button');if(!b||!b.dataset.intent)return;ask(b.textContent.replace(/^\d+/,'').trim());});}
+    return ask;
+  }
+  // ヒーローのアシスタント
+  if(document.getElementById('hero-assistant')) wireAssistant('ah-thread','ah-input','ah-send','intent-chips');
+  // 右下ドック（同一アシスタント・最小化）
+  var launch=document.getElementById('assistant-launch'),panel=document.getElementById('assistant-panel');
+  if(launch&&panel){launch.addEventListener('click',function(){panel.classList.toggle('open');var i=document.getElementById('ap-input');if(panel.classList.contains('open')&&i)i.focus();});}
+  if(document.getElementById('ap-body')){
+    var dthread=document.getElementById('ap-body'),di=document.getElementById('ap-input'),ds=document.getElementById('ap-send');
+    function dask(text){if(!text)return;append(dthread,'me',text);setTimeout(function(){append(dthread,'',botHTML(classify(text)));},260);}
+    dthread.addEventListener('click',function(e){var b=e.target.closest('.ap-quick button');if(b)dask(b.textContent);});
+    if(ds&&di){ds.addEventListener('click',function(){dask(di.value.trim());di.value='';});di.addEventListener('keydown',function(e){if(e.key==='Enter'){dask(di.value.trim());di.value='';}});}
+  }
+  // ヒーローのアシスタントが見えている間はドックを隠す（スクロールで受け渡し）
+  var dock=document.getElementById('assistant-dock'),hero=document.getElementById('hero-assistant');
+  if(dock&&hero){
+    var panelEl=document.getElementById('assistant-panel');
+    function updateDock(){
+      var r=hero.getBoundingClientRect();
+      var pastHero=r.bottom<80; // ヒーローのアシスタントがほぼ画面外に出たら表示
+      dock.classList.toggle('hide',!pastHero);
+      if(!pastHero&&panelEl) panelEl.classList.remove('open');
+    }
+    window.addEventListener('scroll',updateDock,{passive:true});
+    window.addEventListener('resize',updateDock);
+    updateDock();
+  }
+
+  /* ===== 知識基盤デモ ===== */
+  var KB={
+    invoice:{a:'適格請求書発行事業者の<strong>登録番号（T＋13桁）</strong>は、国税庁「適格請求書発行事業者公表サイト」で検索・確認できます。取引先から受領した請求書の番号が有効かどうかも照会可能です。',
+      src:[['a','記事','インボイス制度 登録番号の確認と実務対応','search.html'],['f','FAQ','登録番号が分からないときは？','search.html']],
+      rel:[['p','商品','税務通信データベースで関連記事を読む','zeimu-tsushin.html'],['s','セミナー','インボイス実務セミナー','seminars.html']]},
+    lease:{a:'新リース会計基準は、原則として<strong>2027年4月1日以後</strong>開始する事業年度から適用されます（早期適用も可）。借手はオンバランス処理が原則となり、税務・申告調整の対応が必要です。',
+      src:[['a','記事','新リース会計基準 適用時期と実務影響','search.html'],['f','FAQ','早期適用はできる？','search.html']],
+      rel:[['s','セミナー','新リース会計基準 適用後の税務・会計処理','seminars.html'],['p','商品','週刊 税務通信＋DBで深掘り','zeimu-tsushin.html']]},
+    ebook:{a:'電子帳簿保存法の対象は、<strong>電子帳簿等保存・スキャナ保存・電子取引データ保存</strong>の3区分。とくに電子取引データは保存が義務化されており、検索要件・真実性要件を満たす運用が必要です。',
+      src:[['a','記事','電子帳簿保存法 3区分と対象書類の整理','search.html'],['f','FAQ','電子取引データの保存要件は？','search.html']],
+      rel:[['s','セミナー','電子帳簿保存 実務対応セミナー','seminars.html'],['p','商品','税務通信データベース','zeimu-tsushin.html']]}
+  };
+  var qs=document.getElementById('kb-qs');
+  if(qs){
+    function renderKB(key){
+      var d=KB[key]; if(!d)return;
+      document.getElementById('kb-answer-text').innerHTML=d.a;
+      document.getElementById('kb-src').innerHTML=d.src.map(function(x){return '<a class="kb-src" href="'+x[3]+'"><span class="src-tag '+x[0]+'">'+x[1]+'</span><span class="src-t">'+x[2]+'</span><span class="src-go">開く →</span></a>';}).join('');
+      document.getElementById('kb-rel').innerHTML=d.rel.map(function(x){return '<a class="btn btn-secondary" href="'+x[3]+'">'+x[1]+'：'+x[2]+'</a>';}).join('');
+    }
+    qs.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;
+      qs.querySelectorAll('button').forEach(function(x){x.classList.remove('active');});b.classList.add('active');renderKB(b.dataset.q);});
+    renderKB('invoice');
+  }
+})();
+</script><script>(function(){var root=document.getElementById('zk-app');
+function show(page,anchor){root.querySelectorAll('.zk-page').forEach(function(p){p.style.display=(p.dataset.page===page)?'':'none';});
+root.querySelectorAll('.nav-link').forEach(function(a){var t=(a.getAttribute('href')||'').replace('.html','');a.classList.toggle('active',t===page);});
+var nav=root.querySelector('.nav-links');if(nav)nav.classList.remove('open');window.scrollTo(0,0);
+if(anchor){var el=root.querySelector('#'+anchor);if(el){setTimeout(function(){el.scrollIntoView({behavior:'smooth',block:'start'});},80);}}}
+root.addEventListener('click',function(e){var a=e.target.closest('a');if(!a)return;var href=a.getAttribute('href')||'';
+if(/\.html(#.*)?$/.test(href)){e.preventDefault();var parts=href.split('#');show(parts[0].replace('.html',''),parts[1]);}
+else if(href.charAt(0)==='#'&&href.length>1){e.preventDefault();var el=root.querySelector(href);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}});
+root.querySelectorAll('form').forEach(function(f){if(f.querySelector('input[type=search]'))f.addEventListener('submit',function(e){e.preventDefault();show('search');});});})();</script>
