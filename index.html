@@ -15,17 +15,18 @@
 <header class="site-header">
   <div class="header-main">
     <a class="logo" href="index.html" aria-label="税務研究会 ホーム"><div class="logo-mark">税</div><div class="logo-text"><strong>税務研究会</strong><span>ZEIMU KENKYUKAI</span></div></a>
-    <form class="header-search" action="search.html"><input type="search" placeholder="記事・商品・セミナー・FAQを横断検索"><button class="search-submit">検索</button></form>
+    <form class="header-search" action="search.html"><span class="kw-tag">KEYWORD</span><input type="search" placeholder="キーワード検索　例：インボイス、リース"><button class="search-submit">検索</button></form>
     <div class="header-actions"><a class="btn btn-secondary" href="login.html">ログイン</a><a class="btn btn-primary" href="contact.html">資料請求</a></div>
   </div>
   <nav class="navbar" aria-label="グローバルナビゲーション"><div class="nav-inner"><button class="mobile-menu" aria-controls="nav-links" aria-expanded="false">メニュー</button><div class="nav-links" id="nav-links"><a class="nav-link active" href="index.html">ホーム</a><a class="nav-link " href="products.html">商品・サービス</a><a class="nav-link " href="zeimu-tsushin.html">税務通信シリーズ</a><a class="nav-link " href="seminars.html">セミナー</a><a class="nav-link " href="contact.html">サポート</a></div></div></nav>
 </header>
 <main id="main">
 <section class="console-wrap"><div class="container">
-  <div class="console-head"><span class="annot acc">AI-NATIVE</span><span class="annot">INTENT ROUTER</span><span class="annot live">● 2035 READY</span></div>
-  <div class="console-head"><h1>ご用件をどうぞ。<br>用件から、最短で。</h1></div>
-  <div class="module console"><span class="module-tab">MODULE 01 ／ 用件コンソール</span>
-    <div class="console-bar"><span class="pre">&gt;_</span><input id="console-input" type="text" placeholder="例：インボイスの最新記事／セミナーを探す／解約したい／ログインできない"><button id="console-go">送信</button></div>
+  <div class="console-head"><span class="annot acc">AI-NATIVE</span><span class="annot">税研アシスタント</span><span class="annot live">● 2035 READY</span></div>
+  <div class="console-head"><h1>ご用件は、話すだけ。</h1></div>
+  <div class="module assistant-hero" id="hero-assistant"><span class="module-tab">MODULE 01 ／ 税研アシスタント</span>
+    <div class="ah-head"><span class="ah-ava">税</span><div><strong>税研アシスタント</strong><span class="ah-sub">用件・質問を話すと、回答と最適な導線にご案内します</span></div></div>
+    <div class="ah-thread" id="ah-thread"><div class="ah-msg">こんにちは。「インボイスの最新記事」「セミナーを探す」「解約したい」など、用件や質問をどうぞ。下のボタンからも選べます。</div></div>
     <div class="intent-chips" id="intent-chips">
       <button class="chip" data-intent="search"><b>01</b>調べる</button>
       <button class="chip" data-intent="learn"><b>02</b>学ぶ・本・セミナー</button>
@@ -38,10 +39,8 @@
       <button class="chip" data-intent="contact"><b>09</b>問い合わせ</button>
       <button class="chip" data-intent="browse"><b>10</b>とりあえず見る</button>
     </div>
-    <div class="console-resp" id="console-resp">
-      <div class="resp-line"><span class="resp-badge">ASSISTANT</span><div class="resp-body"><h4 id="resp-title">—</h4><p id="resp-desc">—</p><div class="resp-cta" id="resp-cta"></div></div></div>
-    </div>
-    <p class="console-hint">自然文で入力するか、上の用件を選択 ／ 推定 → 適切な画面・回答へルーティング（デモ）</p>
+    <div class="ah-input"><input id="ah-input" type="text" placeholder="用件・質問を入力（例：新リース会計基準の適用時期は？）"><button id="ah-send">送信</button></div>
+    <p class="console-hint">語句だけで探すなら、上部の<strong>キーワード検索</strong>が速いです ／ 用件・質問は<strong>アシスタント</strong>へ。右下のボタンは同じアシスタントの最小化表示です。</p>
   </div>
 </div></section>
 
@@ -74,6 +73,20 @@
       <div class="arch-card"><div class="ic">OUT 03</div><h4>API ／ MCP</h4><p>外部AIから接続</p></div>
       <div class="arch-card"><div class="ic">OUT 04</div><h4>営業・CS支援</h4><p>社内AIで案内自動化</p></div>
       <div class="arch-card"><div class="ic">OUT 05</div><h4>パーソナライズ</h4><p>契約状態で最適化</p></div>
+    </div>
+  </div>
+
+  <div class="kb-demo module"><span class="module-tab">DEMO ／ 知識基盤に聞く</span>
+    <p class="kb-lead">統一ナレッジ層が、記事・FAQ・商品・セミナーを横断して<strong>1つの回答＋出典＋次のアクション</strong>にまとめます。例を選んでください。</p>
+    <div class="kb-qs" id="kb-qs">
+      <button data-q="invoice" class="active">インボイスの登録番号はどう確認する？</button>
+      <button data-q="lease">新リース会計基準はいつから適用？</button>
+      <button data-q="ebook">電子帳簿保存の対象書類は？</button>
+    </div>
+    <div class="kb-card" id="kb-card">
+      <div class="kb-answer"><span class="resp-badge">回答</span><div id="kb-answer-text">—</div></div>
+      <div class="kb-block"><div class="kb-label">根拠（横断した出典）</div><div class="kb-sources" id="kb-src"></div></div>
+      <div class="kb-block"><div class="kb-label">関連・次のアクション</div><div class="kb-related" id="kb-rel"></div></div>
     </div>
   </div>
 </div></section>
