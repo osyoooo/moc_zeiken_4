@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>要件対応表（社内資料）｜税務研究会</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a href="#main" class="skip">メインコンテンツへ移動</a>
+<div class="internal-banner">社内資料：リニューアル要件対応表（公開ページからはリンクしていません）</div>
+<header class="site-header"><div class="header-main"><a class="logo" href="index.html" aria-label="税務研究会 ホーム"><div class="logo-mark">税</div><div class="logo-text"><strong>税務研究会</strong><span>ZEIMU KENKYUKAI</span></div></a><form class="header-search" action="search.html"><input type="search" placeholder="記事・商品・セミナー・FAQを横断検索"><button class="search-submit">検索</button></form><div class="header-actions"><a class="btn btn-secondary" href="index.html">モックへ戻る</a></div></div><nav class="navbar" aria-label="グローバルナビゲーション"><div class="nav-inner"><button class="mobile-menu" aria-controls="nav-links" aria-expanded="false">メニュー</button><div class="nav-links" id="nav-links"><a class="nav-link" href="products.html">商品・サービス</a><a class="nav-link" href="zeimu-tsushin.html">税務通信シリーズ</a><a class="nav-link" href="seminars.html">セミナー</a><a class="nav-link" href="contact.html">サポート</a></div></div></nav></header>
+<main id="main">
+<section class="page-hero"><div class="page-hero-inner"><div class="breadcrumb">社内資料 / リニューアル要件対応表</div><h1>リニューアル要件 対応表</h1><p>志田の要件（No.2〜13）を、このモックでどこにどう反映したかの一覧です。今回の再提案では配色を青／モノクロ寄りに変更し、トップの重複導線を削減しました。森廣の No.1 と記入例は対象外です。</p></div></section>
+<section class="section"><div class="container">
+  <div class="note-callout">状態は <b>反映済み</b>（初期案で実装）／<b>今回補強</b>（追加・強化）／<b>運用・設計課題</b>（画面は概念提示、設計が別途必要）の3段階。各行の「反映先」から該当ページへ移動できます。</div>
+  <div class="legend">
+    <span><span class="status done">反映済み</span> 実装ずみ</span>
+    <span><span class="status add">今回補強</span> 追加・強化</span>
+    <span><span class="status ops">運用・設計課題</span> 設計が別途必要</span>
+  </div>
+  <div class="table-wrap"><table class="req-table"><thead><tr><th>No.</th><th>要件（1行）</th><th>状態</th><th>反映先</th><th>ひとことメモ</th></tr></thead><tbody>
+    <tr><td><span class="no">2</span></td><td>HP全体の役割が複雑化／入口ハブとして再定義</td><td><span class="status add">今回補強</span></td><td><a class="btn-text" href="index.html">トップ「意図ルーター」</a></td><td>立場（ペルソナ）依存をやめ、来訪意図を11のドアに整理（調べる/学ぶ/購読・会員/ツール/ログイン/試す/契約/問い合わせ/解約・変更/比較/はじめて）。曖昧な来訪はAIアシスタントが受ける。</td></tr>
+    <tr><td><span class="no">3</span></td><td>サイト横断のナビ・検索が分断</td><td><span class="status done">反映済み</span><span class="status add">今回補強</span></td><td><a class="btn-text" href="search.html">横断検索</a></td><td>検索をヘッダーとヒーローの1系統に統一（旧「ナレッジ検索」の重複を解消）。対象者別入口を併設。</td></tr>
+    <tr><td><span class="no">4</span></td><td>商品・会員制度・DB・セミナーの関係が分かりにくい</td><td><span class="status add">今回補強</span></td><td><a class="btn-text" href="products.html">会員制度・商品の早見表</a> ／ <a class="btn-text" href="zeimu-tsushin.html#compare">比較表</a></td><td>対象者・コンテンツ・ログイン先・会員価格対象を1枚で。営業・CSの案内にも流用可。</td></tr>
+    <tr><td><span class="no">5</span></td><td>商品ページのCTAが多く主導線が見えにくい</td><td><span class="status add">今回補強</span></td><td><a class="btn-text" href="zeimu-tsushin.html">状態別「最初の一歩」</a></td><td>検討中／無料体験／申込／契約中の4状態で第一CTAを1つに固定。</td></tr>
+    <tr><td><span class="no">6</span></td><td>資料請求フォームの入力負荷が高い</td><td><span class="status done">反映済み</span></td><td><a class="btn-text" href="contact.html">資料請求（目的別分岐）</a></td><td>目的を選ぶと必要項目だけ表示。商品ページからの遷移で資料種別を自動選択する想定。</td></tr>
+    <tr><td><span class="no">7</span></td><td>セミナー申込時の会員価格適用が分かりにくい</td><td><span class="status add">今回補強</span></td><td><a class="btn-text" href="seminars.html#detail">申込パネルで会員価格を適用</a></td><td>申込画面に「会員価格が未適用」を明示。ログインで申込内容を保持したまま自動適用するデモ付き。</td></tr>
+    <tr><td><span class="no">8</span></td><td>ログイン体系・IDの使い分けが分かりにくい</td><td><span class="status done">反映済み</span></td><td><a class="btn-text" href="login.html">ログイン先ファインダー</a></td><td>「何を利用したいか」で正しいログイン先を案内。将来のSSO検討余地もメモ。</td></tr>
+    <tr><td><span class="no">9</span></td><td>問い合わせフォームが多用途すぎて長い</td><td><span class="status done">反映済み</span></td><td><a class="btn-text" href="contact.html">お問い合わせ（用途別分岐）</a></td><td>資料／お試し／ログイン／会員価格／契約変更／解約／記事照会に入口を分割。</td></tr>
+    <tr><td><span class="no">10</span></td><td>古い文言・旧仕様が残っている</td><td><span class="status add">今回補強</span></td><td><a class="btn-text" href="zeimu-tsushin.html#compare">情報更新日の表示</a></td><td>顧客向けは「情報更新日」「価格・内容は変更となる場合があります」に簡素化。内部運用語（更新責任部署・公開期限・マスタ）は画面から削除し、運用ルールとして裏で持つ。</td></tr>
+    <tr><td><span class="no">11</span></td><td>同じ商品情報が複数ページに分散し更新漏れリスク</td><td><span class="status ops">運用・設計課題</span></td><td>サイト全体（商品マスタ）</td><td>顧客画面では見せず、商品マスタ＋共通コンポーネントで一元管理。CMS製品・権限設計のヒアリングが前提。</td></tr>
+    <tr><td><span class="no">12</span></td><td>外部フォーム・別基盤が多く計測が難しい</td><td><span class="status ops">運用・設計課題</span></td><td>サイト全体（基盤統合）</td><td>ユーティリティの入口は今回絞り込み済み。フォーム基盤・計測設計の統一は次工程でレビュー。</td></tr>
+    <tr><td><span class="no">13</span></td><td>AI時代に向けた情報提供・外部接続性が弱い</td><td><span class="status done">反映済み</span><span class="status add">今回補強</span></td><td><a class="btn-text" href="index.html">AIアシスタント＋2035基盤</a></td><td>常駐AIアシスタント（RAG）を全ページに。トップに基盤レイヤー（構造化データ/KG・MCP/公開API・SSO/パスキー・パーソナライズ）を明示し、2035年を見据えた“エージェント対応サイト”として位置づけ。</td></tr>
+  </tbody></table></div>
+</div></section>
+<section class="section product-strip"><div class="container"><div class="section-title"><div><div class="eyebrow">この再提案で変えた点</div><h2>フィードバック対応</h2></div></div>
+<div class="cards cards-4">
+  <div class="card"><h3>編集×ブループリント意匠</h3><p>明朝＋朱の角印の編集マストヘッドに、注釈付きブループリント（モノ罫・等幅注記）を重ねた革新側の意匠。</p></div>
+  <div class="card"><h3>意図ベースUXへ</h3><p>ペルソナ偏重をやめ、来訪意図11種をドア化。曖昧な来訪はAIアシスタントが受ける。</p></div>
+  <div class="card"><h3>AIサポート常駐</h3><p>全ページに税研アシスタントのドックを常駐。入力から最適な場所へルーティング。</p></div>
+  <div class="card"><h3>2035年の技術スタック</h3><p>構造化データ/KG・MCP/公開API・SSO・パーソナライズを基盤として明示し、外部AIから参照される前提に。</p></div>
+</div></div></section>
+</main>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div><div class="footer-title">税務研究会</div><p style="color:#dbe2ee;margin:0;font-size:13px">社内資料。公開サイトには含めません。</p></div>
+    <div class="footer-col"><h3>モック各ページ</h3><a href="index.html">トップ</a><a href="products.html">商品を探す</a><a href="zeimu-tsushin.html">税務通信シリーズ</a><a href="seminars.html">セミナー</a></div>
+    <div class="footer-col"><h3>　</h3><a href="login.html">ログイン</a><a href="contact.html">資料請求・問い合わせ</a><a href="search.html">横断検索</a></div>
+  </div>
+  <div class="footer-bottom">社内資料：要件対応表</div>
+</footer>
+<div class="ai-dock" id="ai-dock">
+  <div class="ai-panel" id="ai-panel">
+    <div class="ai-phead"><span class="pulse"></span>税研アシスタント<span class="x" id="ai-close">✕</span></div>
+    <div class="ai-pbody"><div class="ai-msg">こんにちは。税務の調べもの、商品の比較、ログイン先、お試し、解約まで案内します。何をしますか？</div>
+      <div class="ai-sug">
+        <button data-go="search.html">税務情報・記事を調べる</button>
+        <button data-go="zeimu-tsushin.html">紙・DB・会員の違いを比較</button>
+        <button data-go="login.html">ログイン先がわからない</button>
+        <button data-go="contact.html">お試し・資料請求</button>
+        <button data-go="contact.html">解約・契約変更</button>
+      </div>
+    </div>
+    <div class="ai-pfoot"><input id="ai-input" type="text" placeholder="例：DBにログインしたい"><button id="ai-send">送信</button></div>
+  </div>
+  <button class="ai-fab" id="ai-fab"><span class="pulse"></span>税研アシスタント</button>
+</div>
+<script src="script.js"></script>
+</body></html>

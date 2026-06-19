@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>税務研究会</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a href="#main" class="skip">メインコンテンツへ移動</a>
+<div class="dateline"><div class="dateline-inner"><div>ZEIMU KENKYUKAI ／ 税務・会計実務の総合プラットフォーム</div><div>SYSTEM 2026.06.19 <a href="login.html">会員サイト</a><a href="contact.html">問い合わせ</a></div></div></div>
+<header class="site-header">
+  <div class="header-main">
+    <a class="logo" href="index.html" aria-label="税務研究会 ホーム"><div class="logo-mark">税</div><div class="logo-text"><strong>税務研究会</strong><span>ZEIMU KENKYUKAI</span></div></a>
+    <form class="header-search" action="search.html"><input type="search" placeholder="記事・商品・セミナー・FAQを横断検索"><button class="search-submit">検索</button></form>
+    <div class="header-actions"><a class="btn btn-secondary" href="login.html">ログイン</a><a class="btn btn-primary" href="contact.html">資料請求</a></div>
+  </div>
+  <nav class="navbar" aria-label="グローバルナビゲーション"><div class="nav-inner"><button class="mobile-menu" aria-controls="nav-links" aria-expanded="false">メニュー</button><div class="nav-links" id="nav-links"><a class="nav-link active" href="index.html">ホーム</a><a class="nav-link " href="products.html">商品・サービス</a><a class="nav-link " href="zeimu-tsushin.html">税務通信シリーズ</a><a class="nav-link " href="seminars.html">セミナー</a><a class="nav-link " href="contact.html">サポート</a></div></div></nav>
+</header>
+<main id="main">
+<section class="console-wrap"><div class="container">
+  <div class="console-head"><span class="annot acc">AI-NATIVE</span><span class="annot">INTENT ROUTER</span><span class="annot live">● 2035 READY</span></div>
+  <div class="console-head"><h1>ご用件をどうぞ。<br>用件から、最短で。</h1></div>
+  <div class="module console"><span class="module-tab">MODULE 01 ／ 用件コンソール</span>
+    <div class="console-bar"><span class="pre">&gt;_</span><input id="console-input" type="text" placeholder="例：インボイスの最新記事／セミナーを探す／解約したい／ログインできない"><button id="console-go">送信</button></div>
+    <div class="intent-chips" id="intent-chips">
+      <button class="chip" data-intent="search"><b>01</b>調べる</button>
+      <button class="chip" data-intent="learn"><b>02</b>学ぶ・本・セミナー</button>
+      <button class="chip" data-intent="subscribe"><b>03</b>購読・会員</button>
+      <button class="chip" data-intent="tools"><b>04</b>ツール・DB</button>
+      <button class="chip" data-intent="login"><b>05</b>ログイン</button>
+      <button class="chip" data-intent="trial"><b>06</b>お試し</button>
+      <button class="chip" data-intent="contract"><b>07</b>契約・購入</button>
+      <button class="chip" data-intent="cancel"><b>08</b>解約</button>
+      <button class="chip" data-intent="contact"><b>09</b>問い合わせ</button>
+      <button class="chip" data-intent="browse"><b>10</b>とりあえず見る</button>
+    </div>
+    <div class="console-resp" id="console-resp">
+      <div class="resp-line"><span class="resp-badge">ASSISTANT</span><div class="resp-body"><h4 id="resp-title">—</h4><p id="resp-desc">—</p><div class="resp-cta" id="resp-cta"></div></div></div>
+    </div>
+    <p class="console-hint">自然文で入力するか、上の用件を選択 ／ 推定 → 適切な画面・回答へルーティング（デモ）</p>
+  </div>
+</div></section>
+
+<section class="section"><div class="container">
+  <div class="section-title"><div><p class="kicker">MODULE 02 ／ INTENT MAP</p><h2>用件の全体マップ</h2><p>「誰か」ではなく「何をしに来たか」で入口を用意。立場が決まっていない人も迷いません。</p></div></div>
+  <div class="intent-grid" id="intent-grid">
+    <a class="intent-node" data-intent="search" href="search.html"><div class="ix">01 / SEARCH</div><h3>税務情報を調べる</h3><p>記事・FAQ・過去ニュースを横断検索。</p><div class="go">横断検索</div></a>
+    <a class="intent-node" data-intent="learn" href="seminars.html"><div class="ix">02 / LEARN</div><h3>本・セミナーで学ぶ</h3><p>書籍、会場・Live・Webセミナー。</p><div class="go">学ぶ</div></a>
+    <a class="intent-node" data-intent="subscribe" href="products.html"><div class="ix">03 / SUBSCRIBE</div><h3>購読・会員になる</h3><p>定期刊行物・会員制度・特典。</p><div class="go">購読・会員</div></a>
+    <a class="intent-node" data-intent="tools" href="zeimu-tsushin.html"><div class="ix">04 / TOOLS</div><h3>ツール・DBを使う</h3><p>データベース、各種実務ツール。</p><div class="go">ツール</div></a>
+    <a class="intent-node" data-intent="login" href="login.html"><div class="ix">05 / LOGIN</div><h3>ログインする</h3><p>契約商品・会員種別で入口を案内。</p><div class="go">ログイン先</div></a>
+    <a class="intent-node" data-intent="trial" href="contact.html"><div class="ix">06 / TRIAL</div><h3>お試しする</h3><p>DB・読者限定ページの無料体験。</p><div class="go">お試しID</div></a>
+    <a class="intent-node" data-intent="contract" href="zeimu-tsushin.html"><div class="ix">07 / CONTRACT</div><h3>契約・購入する</h3><p>紙・DB・セット・会員価格で申込。</p><div class="go">購入・申込</div></a>
+    <a class="intent-node" data-intent="cancel" href="contact.html"><div class="ix">08 / CANCEL</div><h3>解約する</h3><p>契約状況の確認と手続き案内。</p><div class="go">解約相談</div></a>
+    <a class="intent-node" data-intent="contact" href="contact.html"><div class="ix">09 / CONTACT</div><h3>問い合わせる</h3><p>用途別に最適な窓口へ分岐。</p><div class="go">問い合わせ</div></a>
+    <a class="intent-node" data-intent="browse" href="search.html"><div class="ix">10 / BROWSE</div><h3>とりあえず見る</h3><p>今週の注目・新着・特集。</p><div class="go">注目を見る</div></a>
+  </div>
+</div></section>
+
+<section class="section" style="padding-top:0"><div class="container">
+  <div class="section-title"><div><p class="kicker">MODULE 03 ／ KNOWLEDGE ARCHITECTURE</p><h2>2035年を見据えた情報基盤</h2><p>記事・FAQ・商品・セミナー・会員情報を共通IDで束ね、人にもAIにも同じ知識を返す設計。</p></div></div>
+  <div class="arch">
+    <div class="arch-feed"><div>記事・ニュース</div><div>FAQ</div><div>商品・会員情報</div><div>セミナー</div></div>
+    <div class="arch-pipe"></div>
+    <div class="arch-core"><div class="t">統一ナレッジ層（共通ID・構造化データ）</div><div class="s">SCHEMA.ORG ／ JSON-LD ／ KNOWLEDGE GRAPH</div></div>
+    <div class="arch-pipe"></div>
+    <div class="arch-out">
+      <div class="arch-card"><div class="ic">OUT 01</div><h4>横断検索</h4><p>記事・商品・セミナー</p></div>
+      <div class="arch-card"><div class="ic">OUT 02</div><h4>AIアシスタント</h4><p>RAGで根拠付き回答</p></div>
+      <div class="arch-card"><div class="ic">OUT 03</div><h4>API ／ MCP</h4><p>外部AIから接続</p></div>
+      <div class="arch-card"><div class="ic">OUT 04</div><h4>営業・CS支援</h4><p>社内AIで案内自動化</p></div>
+      <div class="arch-card"><div class="ic">OUT 05</div><h4>パーソナライズ</h4><p>契約状態で最適化</p></div>
+    </div>
+  </div>
+</div></section>
+</main>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div><div class="footer-title">税務研究会</div><p style="color:#d2d9e4;margin:0;font-size:13px">税務・会計の実務情報を、調べる・学ぶ・使うための総合プラットフォーム。</p></div>
+    <div class="footer-col"><h3>Products</h3><a href="products.html">商品・サービス</a><a href="zeimu-tsushin.html">税務通信シリーズ</a><a href="products.html#members">会員制度</a><a href="#">書籍</a></div>
+    <div class="footer-col"><h3>Learn</h3><a href="seminars.html">セミナー</a><a href="seminars.html">Webセミナー</a><a href="#">スタディマップ</a><a href="#">無料コンテンツ</a></div>
+    <div class="footer-col"><h3>Support</h3><a href="login.html">ログイン先を選ぶ</a><a href="contact.html">資料請求</a><a href="contact.html">お問い合わせ</a><a href="#">FAQ</a></div>
+    <div class="footer-col"><h3>Related</h3><a href="#">ZEIKEN LINKS</a><a href="#">ZEIKEN PRESS</a><a href="#">税務研究会とは</a><a href="#">個人情報の保護</a></div>
+  </div>
+  <div class="footer-bottom">Copyright © Zeimu Kenkyukai. All rights reserved.</div>
+</footer>
+<div class="assistant-dock" id="assistant-dock">
+  <div class="assistant-panel" id="assistant-panel">
+    <div class="ap-head"><span class="dot"></span><strong>税研アシスタント</strong><span class="annot">BETA</span></div>
+    <div class="ap-body" id="ap-body">
+      <div class="ap-msg">こんにちは。ご用件を教えてください。記事の検索、商品の比較、ログイン先の確認、解約の相談などに対応します。</div>
+      <div class="ap-quick"><button data-intent="search">記事を探す</button><button data-intent="login">ログインできない</button><button data-intent="trial">お試ししたい</button><button data-intent="cancel">解約したい</button></div>
+    </div>
+    <div class="ap-foot"><input id="ap-input" type="text" placeholder="メッセージを入力…"><button id="ap-send">送信</button></div>
+  </div>
+  <button class="assistant-launch" id="assistant-launch"><span class="dot"></span>アシスタント</button>
+</div>
+<script src="script.js"></script>
+</body></html>
